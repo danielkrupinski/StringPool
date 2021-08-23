@@ -5,7 +5,7 @@ A performant and memory efficient storage for immutable strings with C++17. Supp
 
 Standard C++ string classes - `std::string`, `std::wstring` etc. - aren't very efficient when it comes to memory usage and allocations. Due to **small string optimization** a lot of space can be wasted when storing huge amounts of long strings, that don't fit the capacity of the small string buffer.
 
-StringPool was created to provide a way of storing strings that don't change throughout program execution without excessive memory usage.
+StringPool was created to provide a way of storing strings that don't change throughout program execution without excessive memory usage. Furthermore, it combats memory fragmentation by storing strings together, in blocks.
 
 ## Example usage
 ```cpp
