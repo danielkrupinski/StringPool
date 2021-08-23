@@ -4,6 +4,7 @@ A performant and memory efficient storage for immutable strings with C++17. Supp
 ## Example usage
 ```cpp
 #include <cassert>
+#include <cstring>
 #include <string_view>
 #include <vector>
 
