@@ -1,5 +1,5 @@
 # StringPool
-A performant and memory efficient storage for immutable strings with C++17. Supports standard char types: char, wchar_t, char16_t and char32_t.
+A performant and memory efficient storage for immutable strings with C++17. Supports all standard char types: char, wchar_t, char16_t, char32_t and C++20's char8_t.
 
 ## Motivation
 
