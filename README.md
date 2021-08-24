@@ -66,8 +66,9 @@ int main()
         const auto something = bigPool.add(L"something");
         StringPool<wchar_t, false> tooSmallPool{ something.length() / 2 };
 
-        // if you try to add a string exceeding capacity, StringPool will allocate a new block capable of storing the string
-        assert(tooSmallPool.add(something) == L"something");
+        // if you try to add a string exceeding default block capacity, StringPool will allocate a new block capable of storing the string
+        const auto stillAdded = tooSmallPool.add(something);
+        assert(stillAdded == L"something");
     }
 }
 ```
