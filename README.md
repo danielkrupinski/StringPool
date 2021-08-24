@@ -7,6 +7,19 @@ Standard C++ string classes - `std::string`, `std::wstring` etc. - aren't very e
 
 StringPool was created to provide a way of storing strings that don't change throughout program execution without excessive memory usage. Furthermore, it combats memory fragmentation by storing strings together, in blocks.
 
+## Getting started
+1. Include `StringPool.h` in your project.
+2. Create a pool object:
+```cpp
+StringPool<char> pool;
+```
+3. Add some strings: (don't forget do save values returned from `StringPool<>::add()`)
+```cpp
+std::vector<std::string_view> strings;
+strings.push_back(pool.add("foo"));
+strings.push_back(pool.add("bar"));
+```
+
 ## Example usage
 ```cpp
 #include <cassert>
