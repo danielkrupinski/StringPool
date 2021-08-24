@@ -111,9 +111,17 @@ private:
         return createBlockCapableOfStoring(string);
     }
 
+    [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoring(StringType string)
+    {
+        BlockIterator begin = blocks.begin();
+        if (blocks.size() > 2 && !std::prev(blocks.end(), 2)->canTake(string))
+            begin = std::prev(blocks.end());
+        return begin;
+    }
+
     [[nodiscard]] BlockIterator findBlockCapableOfStoring(StringType string)
     {
-        return std::lower_bound(blocks.begin(), blocks.end(), true, [&string](const auto& block, bool _) { return !block.canTake(string); });
+        return std::lower_bound(getFirstBlockMaybeCapableOfStoring(string), blocks.end(), true, [&string](const auto& block, bool _) { return !block.canTake(string); });
     }
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoring(StringType string)
