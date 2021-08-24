@@ -30,6 +30,7 @@ SOFTWARE.
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <string_view>
 #include <vector>
