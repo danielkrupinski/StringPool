@@ -72,3 +72,6 @@ int main()
     }
 }
 ```
+
+## C++20
+StringPool supports `char8_t` type introduced in C++20 standard out of the box.
