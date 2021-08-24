@@ -2,10 +2,12 @@
 A performant and memory efficient storage for immutable strings with C++17. Supports all standard char types: char, wchar_t, char16_t, char32_t and C++20's char8_t.
 
 ## Motivation
-
 Standard C++ string classes - `std::string`, `std::wstring` etc. - aren't very efficient when it comes to memory usage and allocations. Due to **small string optimization** a lot of space can be wasted when storing huge amounts of long strings, that don't fit the capacity of the small string buffer. A common allocation strategy that `std::basic_string` uses (doubling the capacity when extending the storage) can lead to **almost 50% waste of memory** unless `std::basic_string::shrink_to_fit()` is called.
 
 StringPool was created to provide a way of storing strings that don't change throughout program execution without excessive memory usage. Furthermore, it combats memory fragmentation by storing strings together, in blocks.
+
+## StringPool doesn't do [string interning](https://en.wikipedia.org/wiki/String_interning)
+StringPool doesn't perform any string comparisons, neither it differentiates between two strings - each call to `StringPool<>::add()` gives you a brand new view of the string.
 
 ## Getting started
 1. Include `StringPool.h` in your project.
