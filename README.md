@@ -9,6 +9,9 @@ StringPool was created to provide a way of storing strings that don't change thr
 ## StringPool doesn't do [string interning](https://en.wikipedia.org/wiki/String_interning)
 StringPool doesn't perform any string comparisons, neither it differentiates between two strings - each call to `StringPool<>::add()` gives you a brand new view of the string.
 
+## Use cases
+* localization data (translation strings)
+
 ## Getting started
 1. Include `StringPool.h` in your project.
 2. Create a pool object:
