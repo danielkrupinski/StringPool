@@ -96,6 +96,6 @@ StringPool supports `char8_t` type introduced in C++20 standard out of the box.
 
 ## Thread safety
 * To add strings to a pool (`StringPool<>::add()`) from multiple threads you have to provide synchronization yourself.
-* Once added to pool, strings are `read-only` therefore can be safely accessed from multiple threads.
+* Once added to pool, strings are `read-only` therefore can be safely accessed from multiple threads. That means you can add new strings to the pool and access existing ones in parallel.
 
 For an example use of StringPool accross multiple threads check [Examples/Threaded.cpp](Examples/Threaded.cpp).
