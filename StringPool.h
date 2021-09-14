@@ -38,7 +38,7 @@ SOFTWARE.
 template <typename T, bool NullTerminateStrings = true>
 class StringBlock {
 public:
-    explicit StringBlock(std::size_t elementCount) : memory{ std::make_unique<T[]>(elementCount) }, size{ elementCount } {}
+    explicit StringBlock(std::size_t elementCount) : memory{ new T[elementCount] }, size{ elementCount } {}
 
     using StringType = std::basic_string_view<T>;
 
