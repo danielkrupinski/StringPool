@@ -10,7 +10,8 @@ StringPool was created to provide a way of storing strings that don't change thr
 StringPool doesn't perform any string comparisons, neither it differentiates between two strings - each call to `StringPool<>::add()` gives you a brand new view of the string.
 
 ## Use cases
-* localization data (translation strings)
+* localization (translation) strings
+* storing filenames and paths of files packed in a [VPK](https://developer.valvesoftware.com/wiki/VPK)
 
 ## Getting started
 1. Include `StringPool.h` in your project.
