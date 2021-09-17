@@ -94,6 +94,11 @@ public:
         return addStringToBlock(string, findOrCreateBlockCapableOfStoring(string));
     }
 
+    [[nodiscard]] std::size_t getBlockCount() const noexcept
+    {
+        return blocks.size();
+    }
+
 private:
     using BlockIterator = typename std::vector<BlockType>::iterator;
 
