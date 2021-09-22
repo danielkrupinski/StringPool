@@ -19,7 +19,7 @@ StringPool doesn't perform any string comparisons, neither it differentiates bet
 ```cpp
 StringPool<char> pool;
 ```
-3. Add some strings: (don't forget do save values returned from `StringPool<>::add()`)
+3. Add some strings: (don't forget to save values returned from `StringPool<>::add()`)
 ```cpp
 std::vector<std::string_view> strings;
 strings.push_back(pool.add("foo"));
