@@ -126,7 +126,7 @@ private:
 
     [[nodiscard]] BlockIterator findBlockCapableOfStoring(StringType string)
     {
-        return std::lower_bound(getFirstBlockMaybeCapableOfStoring(string), blocks.end(), true, [&string](const auto& block, bool _) { return !block.canTake(string); });
+        return std::lower_bound(getFirstBlockMaybeCapableOfStoring(string), blocks.end(), true, [&string](const auto& block, bool) { return !block.canTake(string); });
     }
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoring(StringType string)
