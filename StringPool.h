@@ -61,7 +61,7 @@ public:
         return getFreeSpace() >= getStringLengthIncludingNullTerminator(string);
     }
 
-    [[nodiscard]] static std::size_t getStringLengthIncludingNullTerminator(StringType string) noexcept
+    [[nodiscard]] static constexpr std::size_t getStringLengthIncludingNullTerminator(StringType string) noexcept
     {
         if constexpr (NullTerminateStrings)
             return string.length() + 1;
