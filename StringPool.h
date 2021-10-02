@@ -44,7 +44,7 @@ public:
 
     [[nodiscard]] StringType addString(StringType string)
     {
-        assert(canTake(string));
+        assert(canTake(string) && "StringBlock doesn't have enough capacity to store the string");
 
         const auto destination = memory.get() + usedSpace;
         std::copy(string.begin(), string.end(), destination);
