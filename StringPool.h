@@ -90,10 +90,10 @@ public:
     StringPool(Pools&&... pools)
     {
         blocks.reserve((pools.blocks.size() + ...));
-        (std::inplace_merge(blocks.begin(),
-                            blocks.insert(blocks.end(), std::make_move_iterator(pools.blocks.begin()), std::make_move_iterator(pools.blocks.end())),
-                            blocks.end(),
-                            [](const auto& a, const auto& b) { return a.getFreeSpace() < b.getFreeSpace(); }), ...);
+
+        typename decltype(blocks)::iterator inserted;
+        (((inserted = blocks.insert(blocks.end(), std::make_move_iterator(pools.blocks.begin()), std::make_move_iterator(pools.blocks.end()))),
+           std::inplace_merge(blocks.begin(), inserted, blocks.end(), [](const auto& a, const auto& b) { return a.getFreeSpace() < b.getFreeSpace(); })), ...);
     }
 
     using BlockType = StringBlock<T, NullTerminateStrings>;
