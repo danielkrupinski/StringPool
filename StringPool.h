@@ -61,17 +61,17 @@ public:
         return getFreeSpace() >= getSpaceRequiredToStore(string);
     }
 
-    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStore(std::size_t stringLength) noexcept
+    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
     {
         if constexpr (NullTerminateStrings)
-            return stringLength + 1;
+            return length + 1;
         else
-            return stringLength;
+            return length;
     }
 
     [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStore(StringType string) noexcept
     {
-        return getSpaceRequiredToStore(string.length());
+        return getSpaceRequiredToStoreStringOfLength(string.length());
     }
 
     [[nodiscard]] std::size_t getFreeSpace() const noexcept
