@@ -52,16 +52,16 @@ public:
         if constexpr (NullTerminateStrings)
             destination[string.length()] = 0;
 
-        usedSpace += getStringLengthIncludingNullTerminator(string);
+        usedSpace += getSpaceRequiredToStore(string);
         return { destination, string.length() };
     }
 
     [[nodiscard]] bool canTake(StringType string) const noexcept
     {
-        return getFreeSpace() >= getStringLengthIncludingNullTerminator(string);
+        return getFreeSpace() >= getSpaceRequiredToStore(string);
     }
 
-    [[nodiscard]] static constexpr std::size_t getStringLengthIncludingNullTerminator(std::size_t stringLength) noexcept
+    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStore(std::size_t stringLength) noexcept
     {
         if constexpr (NullTerminateStrings)
             return stringLength + 1;
@@ -69,9 +69,9 @@ public:
             return stringLength;
     }
 
-    [[nodiscard]] static constexpr std::size_t getStringLengthIncludingNullTerminator(StringType string) noexcept
+    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStore(StringType string) noexcept
     {
-        return getStringLengthIncludingNullTerminator(string.length());
+        return getSpaceRequiredToStore(string.length());
     }
 
     [[nodiscard]] std::size_t getFreeSpace() const noexcept
@@ -146,7 +146,7 @@ private:
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoring(StringType string)
     {
-        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getStringLengthIncludingNullTerminator(string)));
+        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStore(string)));
         return std::prev(blocks.end());
     }
 
