@@ -33,6 +33,7 @@ SOFTWARE.
 #include <iterator>
 #include <memory>
 #include <string_view>
+#include <type_traits>
 #include <vector>
 
 template <typename T, bool NullTerminateStrings = true>
