@@ -45,7 +45,7 @@ public:
 
     [[nodiscard]] StringType addString(StringType string)
     {
-        assert(canTake(string) && "StringBlock doesn't have enough capacity to store the string");
+        assert(canTakeStringOfLength(string.length()) && "StringBlock doesn't have enough capacity to store the string");
 
         const auto destination = memory.get() + usedSpace;
         std::copy(string.begin(), string.end(), destination);
@@ -135,14 +135,14 @@ private:
     [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoring(StringType string)
     {
         BlockIterator begin = blocks.begin();
-        if (blocks.size() > 2 && !std::prev(blocks.end(), 2)->canTake(string))
+        if (blocks.size() > 2 && !std::prev(blocks.end(), 2)->canTakeStringOfLength(string.length()))
             begin = std::prev(blocks.end());
         return begin;
     }
 
     [[nodiscard]] BlockIterator findBlockCapableOfStoring(StringType string)
     {
-        return std::lower_bound(getFirstBlockMaybeCapableOfStoring(string), blocks.end(), true, [&string](const auto& block, bool) { return !block.canTake(string); });
+        return std::lower_bound(getFirstBlockMaybeCapableOfStoring(string), blocks.end(), true, [stringLength = string.length()](const auto& block, bool) { return !block.canTakeStringOfLength(stringLength); });
     }
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t stringLength)
