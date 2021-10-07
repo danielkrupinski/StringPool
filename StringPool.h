@@ -53,7 +53,7 @@ public:
         if constexpr (NullTerminateStrings)
             destination[string.length()] = 0;
 
-        usedSpace += getSpaceRequiredToStore(string);
+        usedSpace += getSpaceRequiredToStoreStringOfLength(string.length());
         return { destination, string.length() };
     }
 
@@ -73,11 +73,6 @@ public:
             return length + 1;
         else
             return length;
-    }
-
-    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStore(StringType string) noexcept
-    {
-        return getSpaceRequiredToStoreStringOfLength(string.length());
     }
 
     [[nodiscard]] std::size_t getFreeSpace() const noexcept
@@ -152,7 +147,7 @@ private:
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoring(StringType string)
     {
-        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStore(string)));
+        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(string.length())));
         return std::prev(blocks.end());
     }
 
