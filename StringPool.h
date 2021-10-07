@@ -129,7 +129,7 @@ private:
     {
         if (const auto blockCapableOfStoringString = findBlockCapableOfStoring(string); blockCapableOfStoringString != blocks.end())
             return blockCapableOfStoringString;
-        return createBlockCapableOfStoring(string.length());
+        return createBlockCapableOfStoringStringOfLength(string.length());
     }
 
     [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoring(StringType string)
@@ -145,7 +145,7 @@ private:
         return std::lower_bound(getFirstBlockMaybeCapableOfStoring(string), blocks.end(), true, [&string](const auto& block, bool) { return !block.canTake(string); });
     }
 
-    [[nodiscard]] BlockIterator createBlockCapableOfStoring(std::size_t stringLength)
+    [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t stringLength)
     {
         blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(stringLength)));
         return std::prev(blocks.end());
