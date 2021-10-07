@@ -62,11 +62,6 @@ public:
         return getFreeSpace() >= getSpaceRequiredToStoreStringOfLength(length);
     }
 
-    [[nodiscard]] bool canTake(StringType string) const noexcept
-    {
-        return canTakeStringOfLength(string.length());
-    }
-
     [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
     {
         if constexpr (NullTerminateStrings)
