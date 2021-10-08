@@ -122,7 +122,7 @@ private:
 
     [[nodiscard]] BlockIterator findOrCreateBlockCapableOfStoring(StringType string)
     {
-        if (const auto blockCapableOfStoringString = findBlockCapableOfStoring(string); blockCapableOfStoringString != blocks.end())
+        if (const auto blockCapableOfStoringString = findBlockCapableOfStoring(string.length()); blockCapableOfStoringString != blocks.end())
             return blockCapableOfStoringString;
         return createBlockCapableOfStoringStringOfLength(string.length());
     }
@@ -135,9 +135,9 @@ private:
         return begin;
     }
 
-    [[nodiscard]] BlockIterator findBlockCapableOfStoring(StringType string)
+    [[nodiscard]] BlockIterator findBlockCapableOfStoring(std::size_t stringLength)
     {
-        return std::lower_bound(getFirstBlockMaybeCapableOfStoringStringOfLength(string.length()), blocks.end(), true, [stringLength = string.length()](const auto& block, bool) { return !block.canTakeStringOfLength(stringLength); });
+        return std::lower_bound(getFirstBlockMaybeCapableOfStoringStringOfLength(stringLength), blocks.end(), true, [stringLength](const auto& block, bool) { return !block.canTakeStringOfLength(stringLength); });
     }
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t stringLength)
