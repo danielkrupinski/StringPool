@@ -122,27 +122,27 @@ private:
 
     [[nodiscard]] BlockIterator findOrCreateBlockCapableOfStoring(StringType string)
     {
-        if (const auto blockCapableOfStoringString = findBlockCapableOfStoring(string.length()); blockCapableOfStoringString != blocks.end())
+        if (const auto blockCapableOfStoringString = findBlockCapableOfStoringStringOfLength(string.length()); blockCapableOfStoringString != blocks.end())
             return blockCapableOfStoringString;
         return createBlockCapableOfStoringStringOfLength(string.length());
     }
 
-    [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoringStringOfLength(std::size_t stringLength)
+    [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoringStringOfLength(std::size_t length)
     {
         BlockIterator begin = blocks.begin();
-        if (blocks.size() > 2 && !std::prev(blocks.end(), 2)->canTakeStringOfLength(stringLength))
+        if (blocks.size() > 2 && !std::prev(blocks.end(), 2)->canTakeStringOfLength(length))
             begin = std::prev(blocks.end());
         return begin;
     }
 
-    [[nodiscard]] BlockIterator findBlockCapableOfStoring(std::size_t stringLength)
+    [[nodiscard]] BlockIterator findBlockCapableOfStoringStringOfLength(std::size_t length)
     {
-        return std::lower_bound(getFirstBlockMaybeCapableOfStoringStringOfLength(stringLength), blocks.end(), true, [stringLength](const auto& block, bool) { return !block.canTakeStringOfLength(stringLength); });
+        return std::lower_bound(getFirstBlockMaybeCapableOfStoringStringOfLength(length), blocks.end(), true, [length](const auto& block, bool) { return !block.canTakeStringOfLength(length); });
     }
 
-    [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t stringLength)
+    [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t length)
     {
-        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(stringLength)));
+        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(length)));
         return std::prev(blocks.end());
     }
 
