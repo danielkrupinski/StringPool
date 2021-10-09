@@ -102,7 +102,7 @@ public:
 
     [[nodiscard]] StringType add(StringType string)
     {
-        return addStringToBlock(string, findOrCreateBlockCapableOfStoring(string.length()));
+        return addStringToBlock(string, findOrCreateBlockCapableOfStoringStringOfLength(string.length()));
     }
 
     [[nodiscard]] std::size_t getBlockCount() const noexcept
@@ -120,7 +120,7 @@ private:
         return addedString;
     }
 
-    [[nodiscard]] BlockIterator findOrCreateBlockCapableOfStoring(std::size_t length)
+    [[nodiscard]] BlockIterator findOrCreateBlockCapableOfStoringStringOfLength(std::size_t length)
     {
         if (const auto blockCapableOfStoringString = findBlockCapableOfStoringStringOfLength(length); blockCapableOfStoringString != blocks.end())
             return blockCapableOfStoringString;
