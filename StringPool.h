@@ -45,7 +45,10 @@ public:
 
     [[nodiscard]] StringType addString(StringType string)
     {
-        assert(canTakeStringOfLength(string.length()) && "StringBlock doesn't have enough capacity to store the string");
+        if (!canTakeStringOfLength(string.length())) {
+            assert(false && "StringBlock doesn't have enough capacity to store the string");
+            return &nullChar;
+        }
 
         const auto destination = memory.get() + usedSpace;
         std::copy(string.begin(), string.end(), destination);
@@ -76,6 +79,8 @@ public:
     }
 
 private:
+    static constexpr T nullChar = 0;
+
     std::unique_ptr<T[]> memory;
     std::size_t size = 0;
     std::size_t usedSpace = 0;
