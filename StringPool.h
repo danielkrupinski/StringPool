@@ -90,7 +90,7 @@ template <typename T, bool NullTerminateStrings = true>
 class StringPool {
 public:
     StringPool() = default;
-    explicit StringPool(std::size_t defaultBlockCapacity) : defaultBlockCapacity{ defaultBlockCapacity } {}
+    explicit StringPool(std::size_t defaultBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<decltype(blocks)>) : defaultBlockCapacity{ defaultBlockCapacity } {}
 
     template <typename ...Pools, typename = std::enable_if_t<std::conjunction_v<std::is_same<Pools, StringPool>...>>>
     StringPool(Pools&&... pools)
