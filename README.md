@@ -102,4 +102,4 @@ StringPool supports `char8_t` type introduced in C++20 standard out of the box.
 For an example use of StringPool accross multiple threads check [Examples/Threaded.cpp](Examples/Threaded.cpp).
 
 ## Exceptions
-StringPool itself doesn't throw any exception, neither it catches exceptions from the standard library (`std::bad_alloc` etc.).
+StringPool is **exception-neutral** meaning that while it doesn't throw any exception itself, exceptions may be emitted by STL algorithms or containers used in the implementation (`std::bad_alloc` etc.).
