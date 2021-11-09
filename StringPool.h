@@ -135,7 +135,7 @@ private:
     [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoringStringOfLength(std::size_t length)
     {
         BlockIterator begin = blocks.begin();
-        if (blocks.size() > 2 && !std::prev(blocks.end(), 2)->canTakeStringOfLength(length))
+        if (std::distance(blocks.begin(), blocks.end()) > 2 && !std::prev(blocks.end(), 2)->canTakeStringOfLength(length))
             begin = std::prev(blocks.end());
         return begin;
     }
