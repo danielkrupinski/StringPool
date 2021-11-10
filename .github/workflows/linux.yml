@@ -21,14 +21,3 @@ jobs:
       run: mkdir ${{ matrix.configuration }} && cd ${{ matrix.configuration }} && cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
     - name: build
       run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
-
-  clang-debug:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: install
-      run: sudo apt-get update && sudo apt-get install -y clang-12
-    - name: configure
-      run: mkdir Debug && cd Debug && cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_C_COMPILER=clang-12 -D CMAKE_CXX_COMPILER=clang++-12 ..
-    - name: build
-      run: cd Debug && make -j $(nproc --all)
