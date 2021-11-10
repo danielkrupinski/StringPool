@@ -7,7 +7,7 @@ defaults:
     working-directory: Examples
 
 jobs:
-  gcc:
+  build:
     strategy:
       matrix:
         configuration: [Debug, Release]
