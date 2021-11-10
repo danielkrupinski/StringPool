@@ -11,12 +11,13 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
+        compiler: [g++-10, clang-12]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: configure
       env:
-        CXX: g++-10
+        CXX: ${{ matrix.compiler }}
       run: mkdir ${{ matrix.configuration }} && cd ${{ matrix.configuration }} && cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
     - name: build
       run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
