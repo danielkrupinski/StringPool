@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        compiler: [g++-10, clang++-12]
+        compiler: [g++-10, clang++-10, clang++-11, clang++-12]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
