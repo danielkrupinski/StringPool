@@ -88,6 +88,8 @@ private:
 
 template <typename T, bool NullTerminateStrings = true>
 class StringPool {
+    using BlockType = StringBlock<T, NullTerminateStrings>;
+    
 public:
     StringPool() = default;
     explicit StringPool(std::size_t defaultBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<decltype(blocks)>) : defaultBlockCapacity{ defaultBlockCapacity } {}
@@ -103,7 +105,6 @@ public:
            std::inplace_merge(blocks.begin(), inserted, blocks.end(), [](const auto& a, const auto& b) { return a.getFreeSpace() < b.getFreeSpace(); })), ...);
     }
 
-    using BlockType = StringBlock<T, NullTerminateStrings>;
     using StringType = typename BlockType::StringType;
 
     [[nodiscard]] StringType add(StringType string)
