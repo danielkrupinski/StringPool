@@ -89,10 +89,11 @@ private:
 template <typename T, bool NullTerminateStrings = true>
 class StringPool {
     using BlockType = StringBlock<T, NullTerminateStrings>;
-    
+    using Blocks = std::vector<BlockType>;
+
 public:
     StringPool() = default;
-    explicit StringPool(std::size_t defaultBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<decltype(blocks)>) : defaultBlockCapacity{ defaultBlockCapacity } {}
+    explicit StringPool(std::size_t defaultBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<Blocks>) : defaultBlockCapacity{ defaultBlockCapacity } {}
 
     template <typename ...Pools, typename = std::enable_if_t<std::conjunction_v<std::is_same<Pools, StringPool>...>>>
     StringPool(Pools&&... pools)
@@ -118,7 +119,7 @@ public:
     }
 
 private:
-    using BlockIterator = typename std::vector<BlockType>::iterator;
+    using BlockIterator = typename Blocks::iterator;
 
     [[nodiscard]] StringType addStringToBlock(StringType string, BlockIterator block)
     {
@@ -163,6 +164,6 @@ private:
         }
     }
 
-    std::vector<BlockType> blocks;
+    Blocks blocks;
     std::size_t defaultBlockCapacity = 8192;
 };
