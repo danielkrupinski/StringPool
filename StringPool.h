@@ -96,9 +96,9 @@ public:
     explicit StringPool(std::size_t defaultBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<Blocks>) : defaultBlockCapacity{ defaultBlockCapacity } {}
 
     template <typename ...Pools, typename = std::enable_if_t<std::conjunction_v<std::is_same<Pools, StringPool>...>>>
-    StringPool(Pools&&... pools)
+    StringPool(StringPool&& largestPool, Pools&&... pools) : blocks{ std::move(largestPool.blocks) }
     {
-        blocks.reserve((pools.blocks.size() + ...));
+        blocks.reserve(blocks.size() + (pools.blocks.size() + ...));
 
         BlockIterator inserted;
         (((inserted = blocks.insert(blocks.end(), std::make_move_iterator(pools.blocks.begin()), std::make_move_iterator(pools.blocks.end()))),
