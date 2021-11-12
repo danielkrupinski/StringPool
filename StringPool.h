@@ -154,9 +154,14 @@ private:
         return std::prev(blocks.end());
     }
 
+    [[nodiscard]] bool shouldReorderBlocksAfterAddingStringToBlock(BlockIterator block) const
+    {
+        return block != blocks.begin() && block->getFreeSpace() < std::prev(block)->getFreeSpace();
+    }
+
     void blockChanged(BlockIterator block)
     {
-        if (block == blocks.begin() || std::prev(block)->getFreeSpace() <= block->getFreeSpace())
+        if (!shouldReorderBlocksAfterAddingStringToBlock(block))
             return;
 
         if (const auto it = std::upper_bound(blocks.begin(), block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); }); it != block) {
