@@ -159,14 +159,17 @@ private:
         return block != blocks.begin() && block->getFreeSpace() < std::prev(block)->getFreeSpace();
     }
 
-    void blockChanged(BlockIterator block)
+    void reorderBlocksAfterAddingStringToBlock(BlockIterator block)
     {
-        if (!shouldReorderBlocksAfterAddingStringToBlock(block))
-            return;
-
         if (const auto it = std::upper_bound(blocks.begin(), block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); }); it != block) {
             std::rotate(it, block, std::next(block));
         }
+    }
+
+    void blockChanged(BlockIterator block)
+    {
+        if (shouldReorderBlocksAfterAddingStringToBlock(block))
+            reorderBlocksAfterAddingStringToBlock(block);
     }
 
     Blocks blocks;
