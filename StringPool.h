@@ -37,54 +37,7 @@ SOFTWARE.
 #include <vector>
 
 template <typename T, bool NullTerminateStrings = true>
-class StringBlock {
-public:
-    explicit StringBlock(std::size_t elementCount) : memory{ new T[elementCount] }, size{ elementCount } {}
-
-    using StringType = std::basic_string_view<T>;
-
-    [[nodiscard]] StringType addString(StringType string)
-    {
-        if (!canTakeStringOfLength(string.length())) {
-            assert(false && "StringBlock doesn't have enough capacity to store the string");
-            return &nullChar;
-        }
-
-        const auto destination = memory.get() + usedSpace;
-        std::copy(string.begin(), string.end(), destination);
-
-        if constexpr (NullTerminateStrings)
-            destination[string.length()] = 0;
-
-        usedSpace += getSpaceRequiredToStoreStringOfLength(string.length());
-        return { destination, string.length() };
-    }
-
-    [[nodiscard]] bool canTakeStringOfLength(std::size_t length) const noexcept
-    {
-        return getFreeSpace() >= getSpaceRequiredToStoreStringOfLength(length);
-    }
-
-    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
-    {
-        if constexpr (NullTerminateStrings)
-            return length + 1;
-        else
-            return length;
-    }
-
-    [[nodiscard]] std::size_t getFreeSpace() const noexcept
-    {
-        return size - usedSpace;
-    }
-
-private:
-    static constexpr T nullChar = 0;
-
-    std::unique_ptr<T[]> memory;
-    std::size_t size = 0;
-    std::size_t usedSpace = 0;
-};
+class StringBlock;
 
 template <typename T, bool NullTerminateStrings = true>
 class StringPool {
@@ -174,4 +127,54 @@ private:
 
     Blocks blocks;
     std::size_t defaultBlockCapacity = 8192;
+};
+
+template <typename T, bool NullTerminateStrings>
+class StringBlock {
+public:
+    explicit StringBlock(std::size_t elementCount) : memory{ new T[elementCount] }, size{ elementCount } {}
+
+    using StringType = std::basic_string_view<T>;
+
+    [[nodiscard]] StringType addString(StringType string)
+    {
+        if (!canTakeStringOfLength(string.length())) {
+            assert(false && "StringBlock doesn't have enough capacity to store the string");
+            return &nullChar;
+        }
+
+        const auto destination = memory.get() + usedSpace;
+        std::copy(string.begin(), string.end(), destination);
+
+        if constexpr (NullTerminateStrings)
+            destination[string.length()] = 0;
+
+        usedSpace += getSpaceRequiredToStoreStringOfLength(string.length());
+        return { destination, string.length() };
+    }
+
+    [[nodiscard]] bool canTakeStringOfLength(std::size_t length) const noexcept
+    {
+        return getFreeSpace() >= getSpaceRequiredToStoreStringOfLength(length);
+    }
+
+    [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
+    {
+        if constexpr (NullTerminateStrings)
+            return length + 1;
+        else
+            return length;
+    }
+
+    [[nodiscard]] std::size_t getFreeSpace() const noexcept
+    {
+        return size - usedSpace;
+    }
+
+private:
+    static constexpr T nullChar = 0;
+
+    std::unique_ptr<T[]> memory;
+    std::size_t size = 0;
+    std::size_t usedSpace = 0;
 };
