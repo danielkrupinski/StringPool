@@ -2,10 +2,6 @@ name: Linux
 
 on: [push, pull_request]
 
-defaults:
-  run:
-    working-directory: Examples
-
 jobs:
   build:
     strategy:
