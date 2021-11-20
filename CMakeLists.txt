@@ -13,3 +13,4 @@ endif()
 
 include_directories(.)
 add_subdirectory(Examples)
+add_subdirectory(Tests)
