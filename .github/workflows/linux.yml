@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install compiler
-      run: sudo apt-get install -y ${{ matrix.compiler }}
+      run: sudo apt-get install -y ${{ matrix.compiler }} libgtest-dev
     - name: configure
       env:
         CXX: ${{ matrix.compiler }}
