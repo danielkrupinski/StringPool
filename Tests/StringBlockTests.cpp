@@ -32,7 +32,7 @@ using TypesToTest = testing::Types<
     StringBlock<char32_t, false>, StringBlock<char32_t, true>
 >;
 
-TYPED_TEST_CASE(StringBlockOfZeroCapacity, TypesToTest);
+TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest);
 
 TYPED_TEST(StringBlockOfZeroCapacity, HasNoFreeSpace) {
     ASSERT_EQ(this->block.getFreeSpace(), 0);
@@ -52,7 +52,7 @@ TYPED_TEST(StringBlockOfZeroCapacity, AddedEmptyStringHasZeroLength) {
     }
 }
 
-TYPED_TEST_CASE(StringBlockOfCapacityOfOne, TypesToTest);
+TYPED_TEST_SUITE(StringBlockOfCapacityOfOne, TypesToTest);
 
 TYPED_TEST(StringBlockOfCapacityOfOne, HasFreeSpaceForOneChar) {
     ASSERT_EQ(this->block.getFreeSpace(), 1);
@@ -87,7 +87,7 @@ TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringHasDifferentMemoryLocation) {
     }
 }
 
-TYPED_TEST_CASE(StringBlockOfNonzeroCapacity, TypesToTest);
+TYPED_TEST_SUITE(StringBlockOfNonzeroCapacity, TypesToTest);
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, FreeSpaceEqualsCapacityWhenEmpty) {
     ASSERT_EQ(this->block.getFreeSpace(), this->capacity);
