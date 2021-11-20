@@ -47,8 +47,9 @@ TYPED_TEST(StringBlockOfZeroCapacity, CanTakeStringOfZeroLengthIfNotNullterminat
 }
 
 TYPED_TEST(StringBlockOfZeroCapacity, AddedEmptyStringHasZeroLength) {
-    if (this->block.canTakeStringOfLength(0))
+    if (this->block.canTakeStringOfLength(0)) {
         ASSERT_EQ(this->block.addString({}).length(), 0);
+    }
 }
 
 TYPED_TEST_CASE(StringBlockOfCapacityOfOne, TypesToTest);
@@ -74,8 +75,9 @@ TYPED_TEST(StringBlockOfCapacityOfOne, AddedEmptyStringHasZeroLength) {
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringPreservesLength) {
-    if (this->block.canTakeStringOfLength(1))
+    if (this->block.canTakeStringOfLength(1)) {
         ASSERT_EQ(this->block.addString(std::basic_string<typename TypeParam::StringType::value_type>(1, '7')).length(), 1);
+    }
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringHasDifferentMemoryLocation) {
