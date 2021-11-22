@@ -14,9 +14,7 @@ jobs:
     - name: Install compiler
       run: sudo apt-get install -y ${{ matrix.compiler }}
     - name: configure
-      env:
-        CXX: ${{ matrix.compiler }}
-      run: cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -S . -B ${{ matrix.configuration }}
+      run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -S . -B ${{ matrix.configuration }}
     - name: build
       run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
 
@@ -31,9 +29,7 @@ jobs:
     - name: Install compiler
       run: sudo apt-get install -y ${{ matrix.compiler }} libgtest-dev
     - name: configure
-      env:
-        CXX: ${{ matrix.compiler }}
-      run: cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
+      run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
     - name: build
       run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
     - name: Run unit tests
