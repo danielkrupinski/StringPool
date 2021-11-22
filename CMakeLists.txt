@@ -12,5 +12,11 @@ else()
 endif()
 
 include_directories(.)
-add_subdirectory(Examples)
+
+option(BUILD_EXAMPLES "Build examples" OFF)
+
+if (BUILD_EXAMPLES)
+    add_subdirectory(Examples)
+endif()
+
 add_subdirectory(Tests)

@@ -16,6 +16,6 @@ jobs:
     - name: configure
       env:
         CXX: ${{ matrix.compiler }}
-      run: cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -S . -B ${{ matrix.configuration }}
+      run: cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -S . -B ${{ matrix.configuration }}
     - name: build
       run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
