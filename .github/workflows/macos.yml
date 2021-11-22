@@ -1,0 +1,35 @@
+name: macOS
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        compiler: [gcc-10]
+        configuration: [Debug, Release]
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install compiler
+      run: brew install ${{ matrix.compiler }}
+    - name: configure
+      run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -S . -B ${{ matrix.configuration }}
+    - name: build
+      run: cmake --build ${{ matrix.configuration }} -j $(sysctl -n hw.ncpu)
+  tests:
+    strategy:
+      matrix:
+        compiler: [gcc-10]
+        configuration: [Debug, Release]
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install compiler
+      run: brew install ${{ matrix.compiler }} googletest
+    - name: configure
+      run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
+    - name: build
+      run: cmake --build ${{ matrix.configuration }} -j $(sysctl -n hw.ncpu)
+    - name: Run unit tests
+      run: cd ${{ matrix.configuration }} && ctest
