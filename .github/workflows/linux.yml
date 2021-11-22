@@ -16,7 +16,7 @@ jobs:
     - name: configure
       run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -S . -B ${{ matrix.configuration }}
     - name: build
-      run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
+      run: cmake --build ${{ matrix.configuration }} -j $(nproc --all)
 
   tests:
     strategy:
@@ -31,6 +31,6 @@ jobs:
     - name: configure
       run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
     - name: build
-      run: cd ${{ matrix.configuration }} && make -j $(nproc --all)
+      run: cmake --build ${{ matrix.configuration }} -j $(nproc --all)
     - name: Run unit tests
       run: cd ${{ matrix.configuration }} && ctest
