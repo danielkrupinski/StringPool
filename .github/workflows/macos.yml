@@ -9,6 +9,7 @@ jobs:
         xcode: [12.4]
         configuration: [Debug, Release]
     runs-on: macos-latest
+    name: build (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
     - name: Install GTest
@@ -23,6 +24,7 @@ jobs:
         xcode: [12.4]
         configuration: [Debug, Release]
     runs-on: macos-latest
+    name: build (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
     - name: Install GTest
