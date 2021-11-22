@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        xcode: [12.4]
+        xcode: [12.4, 12.3]
         configuration: [Debug, Release]
     runs-on: macos-latest
     name: build (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
@@ -21,7 +21,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        xcode: [12.4]
+        xcode: [12.4, 12.3]
         configuration: [Debug, Release]
     runs-on: macos-latest
     name: build (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
