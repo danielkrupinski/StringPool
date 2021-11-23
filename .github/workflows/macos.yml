@@ -9,28 +9,13 @@ jobs:
         xcode: [12.4, 12.3, 12.2, 12.1.1]
         configuration: [Debug, Release]
     runs-on: macos-10.15
-    name: build (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
+    name: build and test (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
     - name: Install GTest
       run: brew install googletest
     - name: configure
-      run: DEVELOPER_DIR=/Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -S . -B ${{ matrix.configuration }}
-    - name: build
-      run: cmake --build ${{ matrix.configuration }} -j $(sysctl -n hw.ncpu)
-  tests:
-    strategy:
-      matrix:
-        xcode: [12.4, 12.3, 12.2, 12.1.1]
-        configuration: [Debug, Release]
-    runs-on: macos-10.15
-    name: tests (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
-    steps:
-    - uses: actions/checkout@v2
-    - name: Install GTest
-      run: brew install googletest
-    - name: configure
-      run: DEVELOPER_DIR=/Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
+      run: DEVELOPER_DIR=/Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
     - name: build
       run: cmake --build ${{ matrix.configuration }} -j $(sysctl -n hw.ncpu)
     - name: Run unit tests
