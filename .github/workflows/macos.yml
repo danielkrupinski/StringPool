@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        xcode: [12.4, 12.3]
+        xcode: [12.4, 12.3, 12.2]
         configuration: [Debug, Release]
     runs-on: macos-10.15
     name: build (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
@@ -21,7 +21,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        xcode: [12.4, 12.3]
+        xcode: [12.4, 12.3, 12.2]
         configuration: [Debug, Release]
     runs-on: macos-10.15
     name: tests (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
