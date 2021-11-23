@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install compiler
-      run: sudo apt-get install -y ${{ matrix.compiler }} libgtest-dev
+      run: sudo apt-get install -y ${{ matrix.compiler }}
     - name: configure
       run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
     - name: build
