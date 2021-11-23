@@ -12,8 +12,6 @@ jobs:
     name: build and test (Xcode ${{ matrix.xcode }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
-    - name: Install GTest
-      run: brew install googletest
     - name: configure
       run: DEVELOPER_DIR=/Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -S . -B ${{ matrix.configuration }}
     - name: build
