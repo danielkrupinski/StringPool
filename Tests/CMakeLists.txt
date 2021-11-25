@@ -32,6 +32,7 @@ try_compile(
 
 if (HAS_CPP_20)
   message("char8_t can be tested with this compiler!")
+  target_compile_features(StringBlockTests PRIVATE cxx_std_20)
 endif()
 
 include(GoogleTest)
