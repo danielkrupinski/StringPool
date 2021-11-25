@@ -1,0 +1,19 @@
+name: Windows
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    runs-on: windows-latest
+    name: build and test (${{ matrix.configuration }})
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: cmake -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -S . -B build
+    - name: build
+      run: cmake --build build --config ${{ matrix.configuration }}
+    - name: Run unit tests
+      run: cd build && ctest
