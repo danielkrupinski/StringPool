@@ -5,6 +5,9 @@
 #include <StringPool.h>
 
 template <typename T>
+class StringBlockTest : public testing::Test {};
+
+template <typename T>
 class StringBlockOfZeroCapacity : public testing::Test {
 protected:
     T block{ 0 };
@@ -34,6 +37,32 @@ using TypesToTest = testing::Types<
     ,StringBlock<char8_t, false>, StringBlock<char8_t, true>
 #endif
 >;
+
+TYPED_TEST_SUITE(StringBlockTest, TypesToTest, );
+
+TYPED_TEST(StringBlockTest, ConstructorCanThrowBadAllocForZeroCapacity) {
+    try {
+        TypeParam block{ 0 };
+    } catch (const std::bad_alloc&) {
+        SUCCEED();
+    }
+}
+
+TYPED_TEST(StringBlockTest, ConstructorCanThrowBadAllocForNonZeroCapacity) {
+    try {
+        TypeParam block{ 500 };
+    } catch (const std::bad_alloc&) {
+        SUCCEED();
+    }
+}
+
+TYPED_TEST(StringBlockTest, ConstructorCanThrowBadAllocForMaxCapacity) {
+    try {
+        TypeParam block{ std::numeric_limits<std::size_t>::max() };
+    } catch (const std::bad_alloc&) {
+        SUCCEED();
+    }
+}
 
 TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest, );
 
