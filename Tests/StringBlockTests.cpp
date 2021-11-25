@@ -30,6 +30,9 @@ using TypesToTest = testing::Types<
     StringBlock<wchar_t, false>, StringBlock<wchar_t, true>,
     StringBlock<char16_t, false>, StringBlock<char16_t, true>,
     StringBlock<char32_t, false>, StringBlock<char32_t, true>
+#ifdef __cpp_lib_char8_t
+    ,StringBlock<char8_t, false>, StringBlock<char8_t, true>
+#endif
 >;
 
 TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest, );
