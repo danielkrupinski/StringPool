@@ -18,6 +18,8 @@ get_target_property(LIBRARIES_LIST StringBlockTests LINK_LIBRARIES)
 get_target_property(STRINGBLOCKTESTS_INCLUDE_DIRS StringBlockTests INCLUDE_DIRECTORIES)
 get_target_property(GTEST_INCLUDE_DIRS gtest INCLUDE_DIRECTORIES)
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
 try_compile(
   HAS_CPP_20
   ${CMAKE_CURRENT_BINARY_DIR}/try_compile
