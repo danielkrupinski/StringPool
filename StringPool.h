@@ -31,6 +31,7 @@ SOFTWARE.
 #include <cassert>
 #include <cstddef>
 #include <iterator>
+#include <limits>
 #include <memory>
 #include <string_view>
 #include <type_traits>
@@ -161,7 +162,7 @@ public:
     [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
     {
         if constexpr (NullTerminateStrings)
-            return length + 1;
+            return (length != (std::numeric_limits<std::size_t>::max)()) ? length + 1 : length;
         else
             return length;
     }
