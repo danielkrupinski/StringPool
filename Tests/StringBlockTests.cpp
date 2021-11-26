@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <limits>
 #include <string>
 
 #include <gtest/gtest.h>
@@ -74,6 +75,10 @@ TYPED_TEST(StringBlockOfZeroCapacity, CannotTakeStringOfNonzeroLength) {
     ASSERT_FALSE(this->block.canTakeStringOfLength(100));
 }
 
+TYPED_TEST(StringBlockOfZeroCapacity, CannotTakeStringOfMaxLength) {
+    ASSERT_FALSE(this->block.canTakeStringOfLength(std::numeric_limits<std::size_t>::max()));
+}
+
 TYPED_TEST(StringBlockOfZeroCapacity, CanTakeStringOfZeroLengthIfNotNullterminating) {
     ASSERT_EQ(this->block.canTakeStringOfLength(0), TypeParam::getSpaceRequiredToStoreStringOfLength(0) == 0);
 }
@@ -100,6 +105,10 @@ TYPED_TEST(StringBlockOfCapacityOfOne, CanTakeStringOfLengthOfOneIfNotNulltermin
 
 TYPED_TEST(StringBlockOfCapacityOfOne, CannotTakeStringLongerThanOneChar) {
     ASSERT_FALSE(this->block.canTakeStringOfLength(123));
+}
+
+TYPED_TEST(StringBlockOfCapacityOfOne, CannotTakeStringOfMaxLength) {
+    ASSERT_FALSE(this->block.canTakeStringOfLength(std::numeric_limits<std::size_t>::max()));
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedEmptyStringHasZeroLength) {
@@ -139,6 +148,10 @@ TYPED_TEST(StringBlockOfNonzeroCapacity, CanTakeStringOfShorterThanCapacity) {
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, CannotTakeStringLongerThanCapacity) {
     ASSERT_FALSE(this->block.canTakeStringOfLength(this->capacity + 1));
+}
+
+TYPED_TEST(StringBlockOfNonzeroCapacity, CannotTakeStringOfMaxLength) {
+    ASSERT_FALSE(this->block.canTakeStringOfLength(std::numeric_limits<std::size_t>::max()));
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedEmptyStringHasZeroLength) {
