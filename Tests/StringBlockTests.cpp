@@ -179,6 +179,16 @@ TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringHasDifferentMemoryLocation) 
     ASSERT_NE(this->block.addString(toAdd).data(), toAdd.data());
 }
 
+TYPED_TEST(StringBlockOfNonzeroCapacity, AddingStringDoesntAffectPreviouslyAddedString) {
+    if (this->block.getFreeSpace() >= TypeParam::getSpaceRequiredToStoreStringOfLength(0) + TypeParam::getSpaceRequiredToStoreStringOfLength(1)) {
+        const std::basic_string<typename TypeParam::StringType::value_type> first(this->capacity / 3 + 1, '4');
+        const std::basic_string<typename TypeParam::StringType::value_type> second(this->capacity / 3 + 1, '5');
+        const auto firstAdded = this->block.addString(first);
+        (void)this->block.addString(second);
+        ASSERT_EQ(firstAdded, first);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     testing::InitGoogleTest(&argc, argv);
