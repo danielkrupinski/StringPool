@@ -162,7 +162,7 @@ public:
     [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
     {
         if constexpr (NullTerminateStrings)
-            return (length != (std::numeric_limits<std::size_t>::max)()) ? length + 1 : length;
+            return isStringLengthValid(length) ? length + 1 : length;
         else
             return length;
     }
@@ -173,6 +173,14 @@ public:
     }
 
 private:
+    [[nodiscard]] static constexpr bool isStringLengthValid(std::size_t length) noexcept
+    {
+        if constexpr (NullTerminateStrings)
+            return length != (std::numeric_limits<std::size_t>::max)();
+        else
+            return true;
+    }
+
     static constexpr T nullChar = 0;
 
     std::unique_ptr<T[]> memory;
