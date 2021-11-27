@@ -156,7 +156,7 @@ public:
 
     [[nodiscard]] bool canTakeStringOfLength(std::size_t length) const noexcept
     {
-        return getFreeSpace() >= getSpaceRequiredToStoreStringOfLength(length);
+        return getFreeSpace() >= getSpaceRequiredToStoreStringOfLength(length) && isStringLengthValid(length);
     }
 
     [[nodiscard]] static constexpr std::size_t getSpaceRequiredToStoreStringOfLength(std::size_t length) noexcept
