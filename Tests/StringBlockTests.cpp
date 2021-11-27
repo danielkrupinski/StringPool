@@ -121,6 +121,13 @@ TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringPreservesLength) {
     }
 }
 
+TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringPreservesData) {
+    if (this->block.canTakeStringOfLength(1)) {
+        const std::basic_string<typename TypeParam::StringType::value_type> toAdd(1, '7');
+        ASSERT_EQ(this->block.addString(toAdd), toAdd);
+    }
+}
+
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringHasDifferentMemoryLocation) {
     if (this->block.canTakeStringOfLength(1)) {
         const std::basic_string<typename TypeParam::StringType::value_type> toAdd(1, '7');
@@ -160,6 +167,11 @@ TYPED_TEST(StringBlockOfNonzeroCapacity, AddedEmptyStringHasZeroLength) {
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringPreservesLength) {
     ASSERT_EQ(this->block.addString(std::basic_string<typename TypeParam::StringType::value_type>(this->capacity - 1, 'a')).length(), this->capacity - 1);
+}
+
+TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringPreservesData) {
+    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(this->capacity - 1, 'b');
+    ASSERT_EQ(this->block.addString(toAdd), toAdd);
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringHasDifferentMemoryLocation) {
