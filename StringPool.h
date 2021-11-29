@@ -116,7 +116,10 @@ private:
     void reorderBlocksAfterAddingStringToBlock(BlockIterator block)
     {
         if (const auto it = std::upper_bound(blocks.begin(), block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); }); it != block) {
-            std::rotate(it, block, std::next(block));
+            if (it->getFreeSpace() == std::prev(block)->getFreeSpace())
+                std::iter_swap(it, block);
+            else
+                std::rotate(it, block, std::next(block));
         }
     }
 
