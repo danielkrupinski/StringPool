@@ -175,6 +175,13 @@ public:
         return size - usedSpace;
     }
 
+    friend void swap(StringBlock& a, StringBlock& b) noexcept
+    {
+        a.memory.swap(b.memory);
+        std::swap(a.size, b.size);
+        std::swap(a.usedSpace, b.usedSpace);
+    }
+
 private:
     [[nodiscard]] static constexpr bool isStringLengthValid(std::size_t length) noexcept
     {
