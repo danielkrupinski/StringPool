@@ -43,6 +43,11 @@ TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedStringPreservesLength) {
     ASSERT_EQ(this->pool.add(toAdd).length(), toAdd.length());
 }
 
+TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedStringPreservesData) {
+    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(4040, 'b');
+    ASSERT_EQ(this->pool.add(toAdd), toAdd);
+}
+
 TYPED_TEST_SUITE(StringPoolOfNonzeroDefaultCapacity, TypesToTest, );
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, HasNoBlocksWhenConstructed) {
@@ -56,4 +61,9 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesLength) {
     const std::basic_string<typename TypeParam::StringType::value_type> toAdd(2020, 'f');
     ASSERT_EQ(this->pool.add(toAdd).length(), toAdd.length());
+}
+
+TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesData) {
+    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(3033, 'k');
+    ASSERT_EQ(this->pool.add(toAdd), toAdd);
 }
