@@ -39,9 +39,9 @@ int main()
 {
     // StringPool of null-terminated strings
     {
-        std::vector<std::string_view> strings;
-
         StringPool<char, true> pool;
+
+        std::vector<std::string_view> strings;
         strings.push_back(pool.add("one"));
 
         // string views passed to StringPool<>::add() don't have to point to a null-terminated string
@@ -61,9 +61,9 @@ int main()
 
     // StringPool of not null-terminated strings, uses less memory (1 byte per string) by dropping C compatibility
     {
-        std::vector<std::string_view> strings;
-
         StringPool<char, false> pool;
+
+        std::vector<std::string_view> strings;
         strings.push_back(pool.add("one"));
 
         // string views passed to StringPool<>::add() don't have to point to a null-terminated string
