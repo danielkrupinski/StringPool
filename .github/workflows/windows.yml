@@ -16,4 +16,4 @@ jobs:
     - name: build
       run: cmake --build build --config ${{ matrix.configuration }}
     - name: Run unit tests
-      run: cd build && ctest
+      run: cd build && ctest --output-on-failure

@@ -17,4 +17,4 @@ jobs:
     - name: build
       run: cmake --build ${{ matrix.configuration }} -j $(sysctl -n hw.ncpu)
     - name: Run unit tests
-      run: cd ${{ matrix.configuration }} && ctest -j $(sysctl -n hw.ncpu)
+      run: cd ${{ matrix.configuration }} && ctest --output-on-failure -j $(sysctl -n hw.ncpu)

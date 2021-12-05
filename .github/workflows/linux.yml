@@ -19,4 +19,4 @@ jobs:
     - name: build
       run: cmake --build ${{ matrix.configuration }} -j $(nproc --all)
     - name: Run unit tests
-      run: cd ${{ matrix.configuration }} && ctest -j $(nproc --all)
+      run: cd ${{ matrix.configuration }} && ctest --output-on-failure -j $(nproc --all)
