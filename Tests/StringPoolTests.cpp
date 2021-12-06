@@ -4,6 +4,9 @@
 #include <StringPool.h>
 
 template <typename T>
+class StringPoolTest : public testing::Test {};
+
+template <typename T>
 class StringPoolOfZeroDefaultCapacity : public testing::Test {
 protected:
     T pool{ 0 };
@@ -27,6 +30,24 @@ using TypesToTest = testing::Types<
     StringPool<char16_t, false>, StringPool<char16_t, true>,
     StringPool<char32_t, false>, StringPool<char32_t, true>
 >;
+
+TYPED_TEST_SUITE(StringPoolTest, TypesToTest, );
+
+TYPED_TEST(StringPoolTest, MergingConstructorSumsBlockCounts) {
+    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(10'000, 'a');
+
+    TypeParam pool1, pool2, pool3;
+    (void)pool1.add(toAdd);
+    (void)pool1.add(toAdd);
+    (void)pool2.add(toAdd);
+    (void)pool3.add(toAdd);
+    (void)pool3.add(toAdd);
+    (void)pool3.add(toAdd);
+
+    const auto sumOfBlockCounts = pool1.getBlockCount() + pool2.getBlockCount() + pool3.getBlockCount();
+    TypeParam merged{ std::move(pool1), std::move(pool2), std::move(pool3) };
+    ASSERT_EQ(merged.getBlockCount(), sumOfBlockCounts);
+}
 
 TYPED_TEST_SUITE(StringPoolOfZeroDefaultCapacity, TypesToTest, );
 
