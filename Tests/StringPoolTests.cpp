@@ -97,7 +97,7 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesData) {
     ASSERT_EQ(this->pool.add(toAdd), toAdd);
 }
 
-TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddingStringIncreasesBlockCountByOneWhenEmpty) {
+TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddingStringIncreasesBlockCountByOneWhenEmpty) {
     const std::basic_string<typename TypeParam::StringType::value_type> toAdd(256, 'x');
     (void)this->pool.add(toAdd);
     ASSERT_EQ(this->pool.getBlockCount(), 1);
