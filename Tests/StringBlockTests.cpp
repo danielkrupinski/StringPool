@@ -1,9 +1,22 @@
 #include <cstddef>
 #include <limits>
+#include <random>
 #include <string>
 
 #include <gtest/gtest.h>
 #include <StringPool.h>
+
+template <typename T>
+[[nodiscard]] static std::basic_string<T> randomStringOfLength(std::size_t length)
+{
+    static_assert(' ' < '~');
+    std::uniform_int_distribution<unsigned int> distribution{ ' ', '~' };
+    std::mt19937 generator{ std::random_device{}() };
+
+    std::basic_string<T> randomString(length, '\0');
+    std::generate(randomString.begin(), randomString.end(), [&distribution, &generator]{ return static_cast<T>(distribution(generator)); });
+    return randomString;
+}
 
 template <typename T>
 class StringBlockTest : public testing::Test {};
@@ -117,20 +130,20 @@ TYPED_TEST(StringBlockOfCapacityOfOne, AddedEmptyStringHasZeroLength) {
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringPreservesLength) {
     if (this->block.canTakeStringOfLength(1)) {
-        ASSERT_EQ(this->block.addString(std::basic_string<typename TypeParam::StringType::value_type>(1, '7')).length(), 1);
+        ASSERT_EQ(this->block.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(1)).length(), 1);
     }
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringPreservesData) {
     if (this->block.canTakeStringOfLength(1)) {
-        const std::basic_string<typename TypeParam::StringType::value_type> toAdd(1, '7');
+        const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(1);
         ASSERT_EQ(this->block.addString(toAdd), toAdd);
     }
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringHasDifferentMemoryLocation) {
     if (this->block.canTakeStringOfLength(1)) {
-        const std::basic_string<typename TypeParam::StringType::value_type> toAdd(1, '7');
+        const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(1);
         ASSERT_NE(this->block.addString(toAdd).data(), toAdd.data());
     }
 }
@@ -166,23 +179,23 @@ TYPED_TEST(StringBlockOfNonzeroCapacity, AddedEmptyStringHasZeroLength) {
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringPreservesLength) {
-    ASSERT_EQ(this->block.addString(std::basic_string<typename TypeParam::StringType::value_type>(this->capacity - 1, 'a')).length(), this->capacity - 1);
+    ASSERT_EQ(this->block.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity - 1)).length(), this->capacity - 1);
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringPreservesData) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(this->capacity - 1, 'b');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity - 1);
     ASSERT_EQ(this->block.addString(toAdd), toAdd);
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringHasDifferentMemoryLocation) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(this->capacity - 1, 'a');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity - 1);
     ASSERT_NE(this->block.addString(toAdd).data(), toAdd.data());
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddingStringDoesntAffectPreviouslyAddedString) {
     if (this->block.getFreeSpace() >= TypeParam::getSpaceRequiredToStoreStringOfLength(0) + TypeParam::getSpaceRequiredToStoreStringOfLength(1)) {
-        const std::basic_string<typename TypeParam::StringType::value_type> first(this->capacity / 3 + 1, '4');
-        const std::basic_string<typename TypeParam::StringType::value_type> second(this->capacity / 3 + 1, '5');
+        const auto first = randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity / 3 + 1);
+        const auto second = randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity / 3 + 1);
         const auto firstAdded = this->block.addString(first);
         (void)this->block.addString(second);
         ASSERT_EQ(firstAdded, first);
