@@ -1,22 +1,11 @@
 #include <cstddef>
 #include <limits>
-#include <random>
 #include <string>
 
 #include <gtest/gtest.h>
 #include <StringPool.h>
 
-template <typename T>
-[[nodiscard]] static std::basic_string<T> randomStringOfLength(std::size_t length)
-{
-    static_assert(' ' < '~');
-    std::uniform_int_distribution<unsigned int> distribution{ ' ', '~' };
-    std::mt19937 generator{ std::random_device{}() };
-
-    std::basic_string<T> randomString(length, '\0');
-    std::generate(randomString.begin(), randomString.end(), [&distribution, &generator]{ return static_cast<T>(distribution(generator)); });
-    return randomString;
-}
+#include "Common.h"
 
 template <typename T>
 class StringBlockTest : public testing::Test {};
