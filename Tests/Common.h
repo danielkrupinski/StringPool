@@ -8,8 +8,7 @@
 template <typename T>
 [[nodiscard]] std::basic_string<T> randomStringOfLength(std::size_t length)
 {
-    static_assert(' ' < '~');
-    std::uniform_int_distribution<unsigned int> distribution{ ' ', '~' };
+    std::uniform_int_distribution<long long> distribution{ (std::numeric_limits<T>::min)(), (std::numeric_limits<T>::max)() };
     std::mt19937 generator{ std::random_device{}() };
 
     std::basic_string<T> randomString(length, '\0');
