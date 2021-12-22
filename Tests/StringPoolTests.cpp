@@ -3,6 +3,8 @@
 #include <gtest/gtest.h>
 #include <StringPool.h>
 
+#include "Common.h"
+
 template <typename T>
 class StringPoolTest : public testing::Test {};
 
@@ -34,7 +36,7 @@ using TypesToTest = testing::Types<
 TYPED_TEST_SUITE(StringPoolTest, TypesToTest, );
 
 TYPED_TEST(StringPoolTest, MergingConstructorSumsBlockCounts) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(10'000, 'a');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(10'000);
 
     TypeParam pool1, pool2, pool3;
     (void)pool1.add(toAdd);
@@ -60,17 +62,17 @@ TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
 }
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedStringPreservesLength) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(1020, 'c');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(1020);
     ASSERT_EQ(this->pool.add(toAdd).length(), toAdd.length());
 }
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedStringPreservesData) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(4040, 'b');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(4040);
     ASSERT_EQ(this->pool.add(toAdd), toAdd);
 }
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddingStringIncreasesBlockCount) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(3033, 'y');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(3033);
     (void)this->pool.add(toAdd);
     (void)this->pool.add(toAdd);
     (void)this->pool.add(toAdd);
@@ -88,17 +90,17 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesLength) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(2020, 'f');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(2020);
     ASSERT_EQ(this->pool.add(toAdd).length(), toAdd.length());
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesData) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(3033, 'k');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(3033);
     ASSERT_EQ(this->pool.add(toAdd), toAdd);
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddingStringIncreasesBlockCountByOneWhenEmpty) {
-    const std::basic_string<typename TypeParam::StringType::value_type> toAdd(256, 'x');
+    const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(256);
     (void)this->pool.add(toAdd);
     ASSERT_EQ(this->pool.getBlockCount(), 1);
 }
