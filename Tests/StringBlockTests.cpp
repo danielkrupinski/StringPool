@@ -76,6 +76,13 @@ TYPED_TEST(StringBlockTest, SwappingTwoBlocksSwapsFreeSpace) {
     ASSERT_TRUE(block1.getFreeSpace() == formerFreeSpace2 && block2.getFreeSpace() == formerFreeSpace1);
 }
 
+TYPED_TEST(StringBlockTest, SwappingTwoBlocksSwapsMemory) {
+    TypeParam block1{ 0 }, block2{ 100 };
+    swap(block1, block2);
+    (void)block1.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(70));
+    SUCCEED();
+}
+
 TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest, );
 
 TYPED_TEST(StringBlockOfZeroCapacity, HasNoFreeSpace) {
