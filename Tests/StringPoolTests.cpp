@@ -104,3 +104,12 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddingStringIncreasesBlockCountBy
     (void)this->pool.add(toAdd);
     ASSERT_EQ(this->pool.getBlockCount(), 1);
 }
+
+TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, DoesNotAllocateNewBlockWhenAddingStringThatCanFitIntoExistingBlock) {
+    const auto toAdd1 = randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity / 3);
+    const auto toAdd2 = randomStringOfLength<typename TypeParam::StringType::value_type>(this->capacity - 1);
+    (void)this->pool.add(toAdd1);
+    (void)this->pool.add(toAdd2);
+    (void)this->pool.add(toAdd1);
+    ASSERT_EQ(this->pool.getBlockCount(), 2);
+}
