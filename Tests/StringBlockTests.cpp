@@ -67,6 +67,15 @@ TYPED_TEST(StringBlockTest, ConstructorCanThrowBadAllocForMaxCapacity) {
     }
 }
 
+TYPED_TEST(StringBlockTest, SwappingTwoBlocksSwapsFreeSpace) {
+    TypeParam block1{ 20 }, block2{ 30 };
+    (void)block1.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(12));
+    (void)block2.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(16));
+    const auto formerFreeSpace1 = block1.getFreeSpace(), formerFreeSpace2 = block2.getFreeSpace();
+    swap(block1, block2);
+    ASSERT_TRUE(block1.getFreeSpace() == formerFreeSpace2 && block2.getFreeSpace() == formerFreeSpace1);
+}
+
 TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest, );
 
 TYPED_TEST(StringBlockOfZeroCapacity, HasNoFreeSpace) {
