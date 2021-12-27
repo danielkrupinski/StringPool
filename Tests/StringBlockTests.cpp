@@ -83,6 +83,24 @@ TYPED_TEST(StringBlockTest, SwappingTwoBlocksSwapsMemory) {
     SUCCEED();
 }
 
+TYPED_TEST(StringBlockTest, AddedStringIsNullTerminatedIfRequired) {
+    if (TypeParam::nullTerminatesStrings()) {
+        constexpr auto capacity = 200;
+        {
+            // create 'dummy' block filled with non-null chars
+            // hopefully the real 'block' below will reuse its memory
+            // allowing us to detect null-termination
+            TypeParam dummy{ capacity };
+            (void)dummy.addString(std::basic_string<typename TypeParam::StringType::value_type>(199, 'a'));
+        }
+
+        TypeParam block{ capacity };
+        const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(40);
+        const auto added = block.addString(toAdd);
+        ASSERT_EQ(static_cast<std::uint32_t>(added.data()[added.length()]), 0u);
+    }
+}
+
 TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest, );
 
 TYPED_TEST(StringBlockOfZeroCapacity, HasNoFreeSpace) {
