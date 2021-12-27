@@ -186,6 +186,11 @@ public:
         std::swap(a.usedSpace, b.usedSpace);
     }
 
+    [[nodiscard]] static constexpr bool nullTerminatesStrings() noexcept
+    {
+        return NullTerminateStrings;
+    }
+
 private:
     [[nodiscard]] static constexpr bool isStringLengthValid(std::size_t length) noexcept
     {
