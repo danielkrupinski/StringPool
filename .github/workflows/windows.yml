@@ -6,8 +6,9 @@ jobs:
   build:
     strategy:
       matrix:
+        os: [windows-latest, windows-2022]
         configuration: [Debug, Release]
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     name: build and test (${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
