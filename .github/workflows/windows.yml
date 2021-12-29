@@ -9,7 +9,7 @@ jobs:
         os: [windows-latest, windows-2022]
         configuration: [Debug, Release]
     runs-on: ${{ matrix.os }}
-    name: build and test (${{ matrix.configuration }})
+    name: build and test (${{ matrix.os }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
     - name: configure
