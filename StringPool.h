@@ -82,19 +82,17 @@ private:
         return addedString;
     }
 
+    void blockChanged(BlockIterator block)
+    {
+        if (shouldReorderBlocksAfterAddingStringToBlock(block))
+            reorderBlocksAfterAddingStringToBlock(block);
+    }
+
     [[nodiscard]] BlockIterator findOrCreateBlockCapableOfStoringStringOfLength(std::size_t length)
     {
         if (const auto blockCapableOfStoringString = findBlockCapableOfStoringStringOfLength(length); blockCapableOfStoringString != blocks.end())
             return blockCapableOfStoringString;
         return createBlockCapableOfStoringStringOfLength(length);
-    }
-
-    [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoringStringOfLength(std::size_t length)
-    {
-        const BlockIterator begin = blocks.begin(), end = blocks.end();
-        if (std::distance(begin, end) > 2 && !std::prev(end, 2)->canTakeStringOfLength(length))
-            return std::prev(end);
-        return begin;
     }
 
     [[nodiscard]] BlockIterator findBlockCapableOfStoringStringOfLength(std::size_t length)
@@ -106,6 +104,14 @@ private:
     {
         blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(length)));
         return std::prev(blocks.end());
+    }
+
+    [[nodiscard]] BlockIterator getFirstBlockMaybeCapableOfStoringStringOfLength(std::size_t length)
+    {
+        const BlockIterator begin = blocks.begin(), end = blocks.end();
+        if (std::distance(begin, end) > 2 && !std::prev(end, 2)->canTakeStringOfLength(length))
+            return std::prev(end);
+        return begin;
     }
 
     [[nodiscard]] bool shouldReorderBlocksAfterAddingStringToBlock(BlockIterator block) const
@@ -125,12 +131,6 @@ private:
                 }
             }
         }
-    }
-
-    void blockChanged(BlockIterator block)
-    {
-        if (shouldReorderBlocksAfterAddingStringToBlock(block))
-            reorderBlocksAfterAddingStringToBlock(block);
     }
 
     Blocks blocks;
