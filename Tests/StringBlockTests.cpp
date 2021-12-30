@@ -104,7 +104,7 @@ TYPED_TEST(StringBlockTest, AddedStringIsNullTerminatedIfRequired) {
 TYPED_TEST_SUITE(StringBlockOfZeroCapacity, TypesToTest, );
 
 TYPED_TEST(StringBlockOfZeroCapacity, HasNoFreeSpace) {
-    ASSERT_EQ(this->block.getFreeSpace(), 0);
+    ASSERT_EQ(this->block.getFreeSpace(), 0u);
 }
 
 TYPED_TEST(StringBlockOfZeroCapacity, CannotTakeStringOfNonzeroLength) {
@@ -121,14 +121,14 @@ TYPED_TEST(StringBlockOfZeroCapacity, CanTakeStringOfZeroLengthIfNotNullterminat
 
 TYPED_TEST(StringBlockOfZeroCapacity, AddedEmptyStringHasZeroLength) {
     if (this->block.canTakeStringOfLength(0)) {
-        ASSERT_EQ(this->block.addString({}).length(), 0);
+        ASSERT_EQ(this->block.addString({}).length(), 0u);
     }
 }
 
 TYPED_TEST_SUITE(StringBlockOfCapacityOfOne, TypesToTest, );
 
 TYPED_TEST(StringBlockOfCapacityOfOne, HasFreeSpaceForOneChar) {
-    ASSERT_EQ(this->block.getFreeSpace(), 1);
+    ASSERT_EQ(this->block.getFreeSpace(), 1u);
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, CanTakeEmptyString) {
@@ -148,12 +148,12 @@ TYPED_TEST(StringBlockOfCapacityOfOne, CannotTakeStringOfMaxLength) {
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedEmptyStringHasZeroLength) {
-    ASSERT_EQ(this->block.addString({}).length(), 0);
+    ASSERT_EQ(this->block.addString({}).length(), 0u);
 }
 
 TYPED_TEST(StringBlockOfCapacityOfOne, AddedStringPreservesLength) {
     if (this->block.canTakeStringOfLength(1)) {
-        ASSERT_EQ(this->block.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(1)).length(), 1);
+        ASSERT_EQ(this->block.addString(randomStringOfLength<typename TypeParam::StringType::value_type>(1)).length(), 1u);
     }
 }
 
@@ -198,7 +198,7 @@ TYPED_TEST(StringBlockOfNonzeroCapacity, CannotTakeStringOfMaxLength) {
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedEmptyStringHasZeroLength) {
-    ASSERT_EQ(this->block.addString({}).length(), 0);
+    ASSERT_EQ(this->block.addString({}).length(), 0u);
 }
 
 TYPED_TEST(StringBlockOfNonzeroCapacity, AddedStringPreservesLength) {
