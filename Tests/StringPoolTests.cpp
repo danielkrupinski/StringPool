@@ -54,11 +54,11 @@ TYPED_TEST(StringPoolTest, MergingConstructorSumsBlockCounts) {
 TYPED_TEST_SUITE(StringPoolOfZeroDefaultCapacity, TypesToTest, );
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, HasNoBlocksWhenConstructed) {
-    ASSERT_EQ(this->pool.getBlockCount(), 0);
+    ASSERT_EQ(this->pool.getBlockCount(), 0u);
 }
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
-    ASSERT_EQ(this->pool.add({}).length(), 0);
+    ASSERT_EQ(this->pool.add({}).length(), 0u);
 }
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedStringPreservesLength) {
@@ -76,17 +76,17 @@ TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddingStringIncreasesBlockCount) {
     (void)this->pool.add(toAdd);
     (void)this->pool.add(toAdd);
     (void)this->pool.add(toAdd);
-    ASSERT_EQ(this->pool.getBlockCount(), 3);
+    ASSERT_EQ(this->pool.getBlockCount(), 3u);
 }
 
 TYPED_TEST_SUITE(StringPoolOfNonzeroDefaultCapacity, TypesToTest, );
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, HasNoBlocksWhenConstructed) {
-    ASSERT_EQ(this->pool.getBlockCount(), 0);
+    ASSERT_EQ(this->pool.getBlockCount(), 0u);
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
-    ASSERT_EQ(this->pool.add({}).length(), 0);
+    ASSERT_EQ(this->pool.add({}).length(), 0u);
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesLength) {
@@ -102,7 +102,7 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesData) {
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddingStringIncreasesBlockCountByOneWhenEmpty) {
     const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(256);
     (void)this->pool.add(toAdd);
-    ASSERT_EQ(this->pool.getBlockCount(), 1);
+    ASSERT_EQ(this->pool.getBlockCount(), 1u);
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, DoesNotAllocateNewBlockWhenAddingStringThatCanFitIntoExistingBlock) {
@@ -111,5 +111,5 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, DoesNotAllocateNewBlockWhenAdding
     (void)this->pool.add(toAdd1);
     (void)this->pool.add(toAdd2);
     (void)this->pool.add(toAdd1);
-    ASSERT_EQ(this->pool.getBlockCount(), 2);
+    ASSERT_EQ(this->pool.getBlockCount(), 2u);
 }
