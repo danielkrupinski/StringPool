@@ -10,7 +10,7 @@ jobs:
         platform: [x64, Win32]
         configuration: [Debug, Release]
     runs-on: ${{ matrix.os }}
-    name: build and test (${{ matrix.os }}, ${{ matrix.configuration }})
+    name: ${{ matrix.os }}.${{ matrix.platform }}.${{ matrix.configuration }}
     steps:
     - uses: actions/checkout@v2
     - name: configure
