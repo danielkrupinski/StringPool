@@ -7,13 +7,14 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, windows-2022]
+        platform: [x64, Win32]
         configuration: [Debug, Release]
     runs-on: ${{ matrix.os }}
     name: build and test (${{ matrix.os }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
     - name: configure
-      run: cmake -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -S . -B build
+      run: cmake -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -A ${{ matrix.platform }} -S . -B build
     - name: build
       run: cmake --build build --config ${{ matrix.configuration }}
     - name: Run unit tests
