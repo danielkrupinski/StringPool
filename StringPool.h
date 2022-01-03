@@ -140,7 +140,7 @@ private:
 template <typename T, bool NullTerminateStrings>
 class StringBlock {
 public:
-    explicit StringBlock(std::size_t elementCount) : memory{ new T[elementCount] }, size{ elementCount } {}
+    explicit StringBlock(std::size_t elementCount) : memory{ new T[elementCount] }, size{ elementCount }, freeSpace{ elementCount } {}
 
     using StringType = std::basic_string_view<T>;
 
@@ -157,7 +157,7 @@ public:
         if constexpr (NullTerminateStrings)
             destination[string.length()] = 0;
 
-        usedSpace += getSpaceRequiredToStoreStringOfLength(string.length());
+        freeSpace -= getSpaceRequiredToStoreStringOfLength(string.length());
         return { destination, string.length() };
     }
 
@@ -176,14 +176,14 @@ public:
 
     [[nodiscard]] std::size_t getFreeSpace() const noexcept
     {
-        return size - usedSpace;
+        return freeSpace;
     }
 
     friend void swap(StringBlock& a, StringBlock& b) noexcept
     {
         a.memory.swap(b.memory);
         std::swap(a.size, b.size);
-        std::swap(a.usedSpace, b.usedSpace);
+        std::swap(a.freeSpace, b.freeSpace);
     }
 
     [[nodiscard]] static constexpr bool nullTerminatesStrings() noexcept
@@ -194,7 +194,7 @@ public:
 private:
     [[nodiscard]] std::size_t getUsedSpace() const noexcept
     {
-        return usedSpace;
+        return size - freeSpace;
     }
 
     [[nodiscard]] static constexpr bool isStringLengthValid(std::size_t length) noexcept
@@ -209,5 +209,5 @@ private:
 
     std::unique_ptr<T[]> memory;
     std::size_t size = 0;
-    std::size_t usedSpace = 0;
+    std::size_t freeSpace = 0;
 };
