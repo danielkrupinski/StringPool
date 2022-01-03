@@ -151,7 +151,7 @@ public:
             return &nullChar;
         }
 
-        const auto destination = memory.get() + usedSpace;
+        const auto destination = memory.get() + getUsedSpace();
         std::copy(string.begin(), string.end(), destination);
 
         if constexpr (NullTerminateStrings)
@@ -192,6 +192,11 @@ public:
     }
 
 private:
+    [[nodiscard]] std::size_t getUsedSpace() const noexcept
+    {
+        return usedSpace;
+    }
+
     [[nodiscard]] static constexpr bool isStringLengthValid(std::size_t length) noexcept
     {
         if constexpr (NullTerminateStrings)
