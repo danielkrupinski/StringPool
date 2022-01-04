@@ -47,7 +47,7 @@ class StringPool {
 
 public:
     StringPool() = default;
-    explicit StringPool(std::size_t defaultBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<Blocks>) : defaultBlockCapacity{ defaultBlockCapacity } {}
+    explicit StringPool(std::size_t standardBlockCapacity) noexcept(std::is_nothrow_default_constructible_v<Blocks>) : standardBlockCapacity{ standardBlockCapacity } {}
 
     template <typename ...Pools, typename = std::enable_if_t<std::conjunction_v<std::is_same<Pools, StringPool>...>>>
     StringPool(StringPool&& largestPool, Pools&&... pools) : blocks{ std::move(largestPool.blocks) }
@@ -102,7 +102,7 @@ private:
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t length)
     {
-        blocks.emplace_back((std::max)(defaultBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(length)));
+        blocks.emplace_back((std::max)(standardBlockCapacity, BlockType::getSpaceRequiredToStoreStringOfLength(length)));
         return std::prev(blocks.end());
     }
 
@@ -134,7 +134,7 @@ private:
     }
 
     Blocks blocks;
-    std::size_t defaultBlockCapacity = 8192;
+    std::size_t standardBlockCapacity = 8192;
 };
 
 template <typename T, bool NullTerminateStrings>
