@@ -51,6 +51,21 @@ TYPED_TEST(StringPoolTest, MergingConstructorSumsBlockCounts) {
     ASSERT_EQ(merged.getBlockCount(), sumOfBlockCounts);
 }
 
+TYPED_TEST(StringPoolTest, StandardBlockCapacityIsZeroWhenZeroWasPassedToConstructor) {
+    TypeParam pool{ 0u };
+    ASSERT_EQ(pool.getStandardBlockCapacity(), 0u);
+}
+
+TYPED_TEST(StringPoolTest, StandardBlockCapacityIsNonZeroWhenNonZeroWasPassedToConstructor) {
+    TypeParam pool{ 512u };
+    ASSERT_EQ(pool.getStandardBlockCapacity(), 512u);
+}
+
+TYPED_TEST(StringPoolTest, StandardBlockCapacityIsMaxWhenMaxWasPassedToConstructor) {
+    TypeParam pool{ std::numeric_limits<std::size_t>::max() };
+    ASSERT_EQ(pool.getStandardBlockCapacity(), std::numeric_limits<std::size_t>::max());
+}
+
 TYPED_TEST_SUITE(StringPoolOfZeroDefaultCapacity, TypesToTest, );
 
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, HasNoBlocksWhenConstructed) {
