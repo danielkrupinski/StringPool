@@ -72,6 +72,11 @@ public:
         return blocks.size();
     }
 
+    [[nodiscard]] std::size_t getStandardBlockCapacity() const noexcept
+    {
+        return standardBlockCapacity;
+    }
+
 private:
     using BlockIterator = typename Blocks::iterator;
 
