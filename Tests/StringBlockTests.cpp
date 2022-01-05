@@ -225,6 +225,19 @@ TYPED_TEST(StringBlockOfNonzeroCapacity, AddingStringDoesntAffectPreviouslyAdded
     }
 }
 
+static_assert(StringBlock<char, true>::nullTerminatesStrings());
+static_assert(!StringBlock<char, false>::nullTerminatesStrings());
+static_assert(StringBlock<wchar_t, true>::nullTerminatesStrings());
+static_assert(!StringBlock<wchar_t, false>::nullTerminatesStrings());
+#ifdef __cpp_lib_char8_t
+static_assert(StringBlock<char8_t, true>::nullTerminatesStrings());
+static_assert(!StringBlock<char8_t, false>::nullTerminatesStrings());
+#endif
+static_assert(StringBlock<char16_t, true>::nullTerminatesStrings());
+static_assert(!StringBlock<char16_t, false>::nullTerminatesStrings());
+static_assert(StringBlock<char32_t, true>::nullTerminatesStrings());
+static_assert(!StringBlock<char32_t, false>::nullTerminatesStrings());
+
 int main(int argc, char* argv[])
 {
     testing::InitGoogleTest(&argc, argv);
