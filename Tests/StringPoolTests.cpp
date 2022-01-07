@@ -51,6 +51,25 @@ TYPED_TEST(StringPoolTest, MergingConstructorSumsBlockCounts) {
     ASSERT_EQ(merged.getBlockCount(), sumOfBlockCounts);
 }
 
+TYPED_TEST(StringPoolTest, MergingConstructorTransfersBlocks) {
+    const auto toAdd1 = randomStringOfLength<typename TypeParam::StringType::value_type>(10'000);
+    const auto toAdd2 = randomStringOfLength<typename TypeParam::StringType::value_type>(10'000);
+    const auto toAdd3 = randomStringOfLength<typename TypeParam::StringType::value_type>(10'000);
+
+    typename TypeParam::StringType added1, added2, added3;
+    TypeParam merged;
+
+    {
+        TypeParam pool1, pool2, pool3;
+        added1 = pool1.add(toAdd1);
+        added2 = pool2.add(toAdd2);
+        added3 = pool3.add(toAdd3);
+        merged = TypeParam{ std::move(pool1), std::move(pool2), std::move(pool3) };
+    }
+
+    ASSERT_TRUE(added1 == toAdd1 && added2 == toAdd2 && added3 == toAdd3);
+}
+
 TYPED_TEST(StringPoolTest, StandardBlockCapacityIsZeroWhenZeroWasPassedToConstructor) {
     TypeParam pool{ 0u };
     ASSERT_EQ(pool.getStandardBlockCapacity(), 0u);
