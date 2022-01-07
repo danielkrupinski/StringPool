@@ -77,6 +77,11 @@ public:
         return standardBlockCapacity;
     }
 
+    void setStandardBlockCapacity(std::size_t newStandardBlockCapacity) noexcept
+    {
+        standardBlockCapacity = newStandardBlockCapacity;
+    }
+
 private:
     using BlockIterator = typename Blocks::iterator;
 
