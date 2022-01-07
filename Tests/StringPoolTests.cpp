@@ -76,6 +76,16 @@ TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
     ASSERT_EQ(this->pool.add({}).length(), 0u);
 }
 
+TYPED_TEST(StringPoolOfZeroDefaultCapacity, SettingHigherStandardBlockCapacityWorks) {
+    this->pool.setStandardBlockCapacity(100u);
+    ASSERT_EQ(this->pool.getStandardBlockCapacity(), 100u);
+}
+
+TYPED_TEST(StringPoolOfZeroDefaultCapacity, SettingMaxStandardBlockCapacityWorks) {
+    this->pool.setStandardBlockCapacity(std::numeric_limits<std::size_t>::max());
+    ASSERT_EQ(this->pool.getStandardBlockCapacity(), std::numeric_limits<std::size_t>::max());
+}
+
 TYPED_TEST(StringPoolOfZeroDefaultCapacity, AddedStringPreservesLength) {
     const auto toAdd = randomStringOfLength<typename TypeParam::StringType::value_type>(1020);
     ASSERT_EQ(this->pool.add(toAdd).length(), toAdd.length());
@@ -102,6 +112,16 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, HasNoBlocksWhenConstructed) {
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
     ASSERT_EQ(this->pool.add({}).length(), 0u);
+}
+
+TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, SettingHigherStandardBlockCapacityWorks) {
+    this->pool.setStandardBlockCapacity(this->capacity + 1);
+    ASSERT_EQ(this->pool.getStandardBlockCapacity(), this->capacity + 1);
+}
+
+TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, SettingMaxStandardBlockCapacityWorks) {
+    this->pool.setStandardBlockCapacity(std::numeric_limits<std::size_t>::max());
+    ASSERT_EQ(this->pool.getStandardBlockCapacity(), std::numeric_limits<std::size_t>::max());
 }
 
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedStringPreservesLength) {
