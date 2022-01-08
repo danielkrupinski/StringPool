@@ -40,6 +40,9 @@ SOFTWARE.
 template <typename T, bool NullTerminateStrings = true>
 class StringBlock;
 
+template <typename BlockIterator, typename StringType>
+class StringBlockEditor;
+
 template <typename T, bool NullTerminateStrings = true>
 class StringPool {
     using BlockType = StringBlock<T, NullTerminateStrings>;
@@ -64,7 +67,7 @@ public:
 
     [[nodiscard]] StringType add(StringType string)
     {
-        return addStringToBlock(string, findOrCreateBlockCapableOfStoringStringOfLength(string.length()));
+        return getBlockCapableOfStoringStringOfLength(string.length()).addString(string);
     }
 
     [[nodiscard]] std::size_t getBlockCount() const noexcept
@@ -85,17 +88,10 @@ public:
 private:
     using BlockIterator = typename Blocks::iterator;
 
-    [[nodiscard]] StringType addStringToBlock(StringType string, BlockIterator block)
+    [[nodiscard]] StringBlockEditor<BlockIterator, StringType> getBlockCapableOfStoringStringOfLength(std::size_t length)
     {
-        const auto addedString = block->addString(string);
-        blockChanged(block);
-        return addedString;
-    }
-
-    void blockChanged(BlockIterator block)
-    {
-        if (shouldReorderBlocksAfterAddingStringToBlock(block))
-            reorderBlocksAfterAddingStringToBlock(block);
+        const auto block = findOrCreateBlockCapableOfStoringStringOfLength(length);
+        return { blocks.begin(), block };
     }
 
     [[nodiscard]] BlockIterator findOrCreateBlockCapableOfStoringStringOfLength(std::size_t length)
@@ -122,25 +118,6 @@ private:
         if (std::distance(begin, end) > 2 && !std::prev(end, 2)->canTakeStringOfLength(length))
             return std::prev(end);
         return begin;
-    }
-
-    [[nodiscard]] bool shouldReorderBlocksAfterAddingStringToBlock(BlockIterator block) const
-    {
-        return block != blocks.begin() && block->getFreeSpace() < std::prev(block)->getFreeSpace();
-    }
-
-    void reorderBlocksAfterAddingStringToBlock(BlockIterator block)
-    {
-        if (auto it = std::upper_bound(blocks.begin(), block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); }); it != block) {
-            if (it->getFreeSpace() == std::prev(block)->getFreeSpace()) {
-                std::iter_swap(it, block);
-            } else {
-                while (it != block) {
-                    std::iter_swap(it, block);
-                    ++it;
-                }
-            }
-        }
     }
 
     Blocks blocks;
@@ -220,4 +197,44 @@ private:
     std::unique_ptr<T[]> memory;
     std::size_t size = 0;
     std::size_t freeSpace = 0;
+};
+
+template <typename BlockIterator, typename StringType>
+class StringBlockEditor {
+public:
+    StringBlockEditor(BlockIterator firstBlock, BlockIterator block) : firstBlock{ firstBlock }, block{ block } {}
+
+    [[nodiscard]] StringType addString(StringType string)
+    {
+        return block->addString(string);
+    }
+
+    ~StringBlockEditor()
+    {
+        if (shouldReorderBlocksAfterAddingStringToBlock())
+            reorderBlocksAfterAddingStringToBlock();
+    }
+
+private:
+    [[nodiscard]] bool shouldReorderBlocksAfterAddingStringToBlock() const
+    {
+        return block != firstBlock && block->getFreeSpace() < std::prev(block)->getFreeSpace();
+    }
+
+    void reorderBlocksAfterAddingStringToBlock()
+    {
+        if (auto it = std::upper_bound(firstBlock, block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); }); it != block) {
+            if (it->getFreeSpace() == std::prev(block)->getFreeSpace()) {
+                std::iter_swap(it, block);
+            } else {
+                while (it != block) {
+                    std::iter_swap(it, block);
+                    ++it;
+                }
+            }
+        }
+    }
+
+    BlockIterator firstBlock;
+    BlockIterator block;
 };
