@@ -150,7 +150,7 @@ private:
 template <typename T, bool NullTerminateStrings>
 class StringBlock {
 public:
-    explicit StringBlock(std::size_t elementCount) : memory{ new T[elementCount] }, size{ elementCount }, freeSpace{ elementCount } {}
+    explicit StringBlock(std::uint64_t elementCount) : memory{ new T[elementCount] }, size{ elementCount }, freeSpace{ elementCount } {}
 
     using StringType = std::basic_string_view<T>;
 
