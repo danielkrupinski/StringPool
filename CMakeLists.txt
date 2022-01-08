@@ -9,6 +9,11 @@ if (MSVC)
     add_compile_options(/W4 /WX /w44388)
 else()
     add_compile_options(-Wall -Wextra -pedantic -Werror)
+
+    if (32_BIT)
+        add_compile_options(-m32)
+        add_link_options(-m32)
+    endif()
 endif()
 
 include_directories(.)
