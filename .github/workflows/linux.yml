@@ -16,7 +16,7 @@ jobs:
     - name: Install compiler
       run: sudo apt-get install -y ${{ matrix.compiler }}
     - name: configure
-      run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -D 32_BIT=${{ matrix.platform == x86 }} -S . -B ${{ matrix.configuration }}
+      run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -D 32_BIT=${{ matrix.platform == 'x86' }} -S . -B ${{ matrix.configuration }}
     - name: build
       run: cmake --build ${{ matrix.configuration }} -j $(nproc --all)
     - name: Run unit tests
