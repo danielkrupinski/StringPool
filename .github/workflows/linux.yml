@@ -15,6 +15,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install compiler
       run: sudo apt-get install -y ${{ matrix.compiler }}
+    - name: Install 32-bit tools
+      if: matrix.platform == 'x86'
+      run: sudo apt-get install -y ${{ matrix.compiler }}:i386
     - name: configure
       run: CXX=${{ matrix.compiler }} cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -D 32_BIT=${{ matrix.platform == 'x86' }} -S . -B ${{ matrix.configuration }}
     - name: build
