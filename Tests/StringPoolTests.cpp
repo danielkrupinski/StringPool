@@ -133,6 +133,11 @@ TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, AddedEmptyStringHasZeroLength) {
     ASSERT_EQ(this->pool.add({}).length(), 0u);
 }
 
+TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, SettingLowerStandardBlockCapacityWorks) {
+    this->pool.setStandardBlockCapacity(this->capacity - 1);
+    ASSERT_EQ(this->pool.getStandardBlockCapacity(), this->capacity - 1);
+}
+
 TYPED_TEST(StringPoolOfNonzeroDefaultCapacity, SettingHigherStandardBlockCapacityWorks) {
     this->pool.setStandardBlockCapacity(this->capacity + 1);
     ASSERT_EQ(this->pool.getStandardBlockCapacity(), this->capacity + 1);
