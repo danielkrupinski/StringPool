@@ -221,9 +221,14 @@ private:
         return block != firstBlock && block->getFreeSpace() < std::prev(block)->getFreeSpace();
     }
 
+    [[nodiscard]] BlockIterator getFirstBlockWithMoreFreeSpaceThanEditedBlock()
+    {
+        return std::upper_bound(firstBlock, block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
+    }
+    
     void reorderBlocksAfterAddingStringToBlock()
     {
-        if (auto it = std::upper_bound(firstBlock, block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); }); it != block) {
+        if (auto it = getFirstBlockWithMoreFreeSpaceThanEditedBlock(); it != block) {
             if (it->getFreeSpace() == std::prev(block)->getFreeSpace()) {
                 std::iter_swap(it, block);
             } else {
