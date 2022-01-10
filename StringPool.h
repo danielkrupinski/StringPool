@@ -221,7 +221,7 @@ private:
         return block != firstBlock && block->getFreeSpace() < std::prev(block)->getFreeSpace();
     }
 
-    [[nodiscard]] BlockIterator getFirstBlockWithMoreFreeSpaceThanEditedBlock()
+    [[nodiscard]] BlockIterator getFirstBlockWithMoreFreeSpaceThanEditedBlock() const
     {
         return std::upper_bound(firstBlock, block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
     }
