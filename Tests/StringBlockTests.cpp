@@ -33,6 +33,7 @@ protected:
 
 using TypesToTest = testing::Types<
     StringBlock<char, false>, StringBlock<char, true>,
+    StringBlock<signed char, false>, StringBlock<signed char, true>,
     StringBlock<wchar_t, false>, StringBlock<wchar_t, true>,
 #ifdef __cpp_lib_char8_t
     StringBlock<char8_t, false>, StringBlock<char8_t, true>,
