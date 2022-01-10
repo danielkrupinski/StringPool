@@ -25,6 +25,7 @@ protected:
 
 using TypesToTest = testing::Types<
     StringPool<char, false>, StringPool<char, true>,
+    StringPool<signed char, false>, StringPool<signed char, true>,
     StringPool<wchar_t, false>, StringPool<wchar_t, true>,
 #ifdef __cpp_lib_char8_t
     StringPool<char8_t, false>, StringPool<char8_t, true>,
