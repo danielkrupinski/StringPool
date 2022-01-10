@@ -70,6 +70,22 @@ TYPED_TEST(StringPoolTest, MergingConstructorTransfersBlocks) {
     ASSERT_TRUE(added1 == toAdd1 && added2 == toAdd2 && added3 == toAdd3);
 }
 
+TYPED_TEST(StringPoolTest, MergingConstructorSortsBlocks) {
+    const auto string = randomStringOfLength<typename TypeParam::StringType::value_type>(7);
+
+    TypeParam merged;
+
+    {
+        TypeParam pool1{ 100 }, pool2{ 10 };
+        (void)pool1.add(string);
+        (void)pool2.add(string);
+        merged = TypeParam{ std::move(pool1), std::move(pool2) };
+    }
+
+    (void)merged.add(string);
+    ASSERT_EQ(merged.getBlockCount(), 2u);
+}
+
 TYPED_TEST(StringPoolTest, StandardBlockCapacityIsZeroWhenZeroWasPassedToConstructor) {
     TypeParam pool{ 0u };
     ASSERT_EQ(pool.getStandardBlockCapacity(), 0u);
