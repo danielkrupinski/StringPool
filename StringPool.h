@@ -226,7 +226,7 @@ private:
         return std::upper_bound(firstBlock, block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
     }
     
-    void reorderBlocksAfterAddingStringToBlock()
+    void reorderBlocksAfterAddingStringToBlock() const
     {
         if (auto it = getFirstBlockWithMoreFreeSpaceThanEditedBlock(); it != block) {
             if (it->getFreeSpace() == std::prev(block)->getFreeSpace()) {
