@@ -88,6 +88,20 @@ TYPED_TEST(StringPoolTest, MergingConstructorSortsBlocks) {
     ASSERT_EQ(merged.getBlockCount(), 2u);
 }
 
+TYPED_TEST(StringPoolTest, StringsAreEfficientlyPacked) {
+    const auto string1 = randomStringOfLength<typename TypeParam::StringType::value_type>(200);
+    const auto string2 = randomStringOfLength<typename TypeParam::StringType::value_type>(7);
+
+    TypeParam pool{ 100 };
+    (void)pool.add(string2);
+    (void)pool.add(string1);
+    (void)pool.add(string1);
+    (void)pool.add(string1);
+    (void)pool.add(string2);
+
+    ASSERT_EQ(pool.getBlockCount(), 4u);
+}
+
 TYPED_TEST(StringPoolTest, StandardBlockCapacityIsZeroWhenZeroWasPassedToConstructor) {
     TypeParam pool{ 0u };
     ASSERT_EQ(pool.getStandardBlockCapacity(), 0u);
