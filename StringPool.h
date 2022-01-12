@@ -226,17 +226,22 @@ private:
         return std::upper_bound(firstBlock, editedBlock, editedBlock->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
     }
     
+    void moveEditedBlockInPlaceOf(BlockIterator block) const
+    {
+        if (block->getFreeSpace() == std::prev(editedBlock)->getFreeSpace()) {
+            std::iter_swap(block, editedBlock);
+        } else {
+            while (block != editedBlock) {
+                std::iter_swap(block, editedBlock);
+                ++block;
+            }
+        }
+    }
+
     void reorderBlocksAfterAddingStringToBlock() const
     {
         if (auto it = getFirstBlockWithMoreFreeSpaceThanEditedBlock(); it != editedBlock) {
-            if (it->getFreeSpace() == std::prev(editedBlock)->getFreeSpace()) {
-                std::iter_swap(it, editedBlock);
-            } else {
-                while (it != editedBlock) {
-                    std::iter_swap(it, editedBlock);
-                    ++it;
-                }
-            }
+            moveEditedBlockInPlaceOf(it);
         }
     }
 
