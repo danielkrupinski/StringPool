@@ -202,11 +202,11 @@ private:
 template <typename BlockIterator, typename StringType>
 class StringBlockEditor {
 public:
-    StringBlockEditor(BlockIterator firstBlock, BlockIterator block) : firstBlock{ firstBlock }, block{ block } {}
+    StringBlockEditor(BlockIterator firstBlock, BlockIterator editedBlock) : firstBlock{ firstBlock }, editedBlock{ editedBlock } {}
 
     [[nodiscard]] StringType addString(StringType string)
     {
-        return block->addString(string);
+        return editedBlock->addString(string);
     }
 
     ~StringBlockEditor()
@@ -218,22 +218,22 @@ public:
 private:
     [[nodiscard]] bool shouldReorderBlocksAfterAddingStringToBlock() const
     {
-        return block != firstBlock && block->getFreeSpace() < std::prev(block)->getFreeSpace();
+        return editedBlock != firstBlock && editedBlock->getFreeSpace() < std::prev(editedBlock)->getFreeSpace();
     }
 
     [[nodiscard]] BlockIterator getFirstBlockWithMoreFreeSpaceThanEditedBlock() const
     {
-        return std::upper_bound(firstBlock, block, block->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
+        return std::upper_bound(firstBlock, editedBlock, editedBlock->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
     }
     
     void reorderBlocksAfterAddingStringToBlock() const
     {
-        if (auto it = getFirstBlockWithMoreFreeSpaceThanEditedBlock(); it != block) {
-            if (it->getFreeSpace() == std::prev(block)->getFreeSpace()) {
-                std::iter_swap(it, block);
+        if (auto it = getFirstBlockWithMoreFreeSpaceThanEditedBlock(); it != editedBlock) {
+            if (it->getFreeSpace() == std::prev(editedBlock)->getFreeSpace()) {
+                std::iter_swap(it, editedBlock);
             } else {
-                while (it != block) {
-                    std::iter_swap(it, block);
+                while (it != editedBlock) {
+                    std::iter_swap(it, editedBlock);
                     ++it;
                 }
             }
@@ -241,5 +241,5 @@ private:
     }
 
     BlockIterator firstBlock;
-    BlockIterator block;
+    BlockIterator editedBlock;
 };
