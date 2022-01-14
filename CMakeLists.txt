@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (MSVC)
-    add_compile_options(/W4 /WX /w44388)
+  add_compile_options(/W4 /WX /w44388)
 else()
-    add_compile_options(-Wall -Wextra -pedantic -Werror)
+  add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
 include_directories(.)
@@ -16,12 +16,12 @@ include_directories(.)
 option(BUILD_EXAMPLES "Build examples" OFF)
 
 if (BUILD_EXAMPLES)
-    add_subdirectory(Examples)
+  add_subdirectory(Examples)
 endif()
 
 option(BUILD_TESTS "Build unit tests" OFF)
 
 if (BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(Tests)
+  enable_testing()
+  add_subdirectory(Tests)
 endif()
