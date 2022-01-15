@@ -228,6 +228,9 @@ private:
     
     void moveEditedBlockInPlaceOf(BlockIterator block) const
     {
+        if (block == editedBlock)
+            return;
+
         if (block->getFreeSpace() == std::prev(editedBlock)->getFreeSpace()) {
             std::iter_swap(block, editedBlock);
         } else {
@@ -240,9 +243,7 @@ private:
 
     void reorderBlocksAfterAddingStringToBlock() const
     {
-        if (auto it = getFirstBlockWithMoreFreeSpaceThanEditedBlock(); it != editedBlock) {
-            moveEditedBlockInPlaceOf(it);
-        }
+        moveEditedBlockInPlaceOf(getFirstBlockWithMoreFreeSpaceThanEditedBlock());
     }
 
     BlockIterator firstBlock;
