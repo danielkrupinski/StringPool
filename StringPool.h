@@ -221,6 +221,11 @@ private:
         return editedBlock != firstBlock && editedBlock->getFreeSpace() < std::prev(editedBlock)->getFreeSpace();
     }
 
+    void reorderBlocksAfterAddingStringToBlock() const
+    {
+        moveEditedBlockInPlaceOf(getFirstBlockWithMoreFreeSpaceThanEditedBlock());
+    }
+
     [[nodiscard]] BlockIterator getFirstBlockWithMoreFreeSpaceThanEditedBlock() const
     {
         return std::upper_bound(firstBlock, editedBlock, editedBlock->getFreeSpace(), [](const auto freeSpace, const auto& block) { return freeSpace < block.getFreeSpace(); });
@@ -239,11 +244,6 @@ private:
                 ++block;
             }
         }
-    }
-
-    void reorderBlocksAfterAddingStringToBlock() const
-    {
-        moveEditedBlockInPlaceOf(getFirstBlockWithMoreFreeSpaceThanEditedBlock());
     }
 
     BlockIterator firstBlock;
