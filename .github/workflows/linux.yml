@@ -6,12 +6,15 @@ jobs:
   build:
     strategy:
       matrix:
-        compiler: [g++-7, g++-8, g++-9, g++-10, clang++-6.0, clang++-7, clang++-8, clang++-9, clang++-10, clang++-11, clang++-12]
+        compiler: [g++-7, g++-8, g++-9, g++-10, g++-11, clang++-6.0, clang++-7, clang++-8, clang++-9, clang++-10, clang++-11, clang++-12]
         configuration: [Debug, Release]
     runs-on: ubuntu-latest
     name: build and test (${{ matrix.compiler }}, ${{ matrix.configuration }})
     steps:
     - uses: actions/checkout@v2
+    - name: Add toolchain PPA
+      if: matrix.compiler == 'g++-11'
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test
     - name: Install compiler
       run: sudo apt-get install -y ${{ matrix.compiler }}
     - name: configure
