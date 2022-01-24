@@ -12,7 +12,7 @@ FetchContent_Declare(
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(Tests StringBlockTests.cpp StringPoolTests.cpp)
+add_executable(Tests StringBlockTests.cpp StringBlockEditorTests.cpp StringPoolTests.cpp)
 target_link_libraries(Tests gtest Threads::Threads)
 
 get_target_property(LIBRARIES_LIST Tests LINK_LIBRARIES)
@@ -24,7 +24,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 try_compile(
   HAS_CPP_20
   ${CMAKE_CURRENT_BINARY_DIR}/try_compile
-  SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/StringBlockTests.cpp ${CMAKE_CURRENT_SOURCE_DIR}/StringPoolTests.cpp
+  SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/StringBlockTests.cpp ${CMAKE_CURRENT_SOURCE_DIR}/StringBlockEditorTests.cpp ${CMAKE_CURRENT_SOURCE_DIR}/StringPoolTests.cpp
   CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${TESTS_INCLUDE_DIRS};${GTEST_INCLUDE_DIRS}"
   LINK_LIBRARIES ${LIBRARIES_LIST}
   CXX_STANDARD 20
