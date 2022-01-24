@@ -12,11 +12,11 @@ FetchContent_Declare(
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(StringBlockTests StringBlockTests.cpp StringPoolTests.cpp)
-target_link_libraries(StringBlockTests gtest Threads::Threads)
+add_executable(Tests StringBlockTests.cpp StringPoolTests.cpp)
+target_link_libraries(Tests gtest Threads::Threads)
 
-get_target_property(LIBRARIES_LIST StringBlockTests LINK_LIBRARIES)
-get_target_property(STRINGBLOCKTESTS_INCLUDE_DIRS StringBlockTests INCLUDE_DIRECTORIES)
+get_target_property(LIBRARIES_LIST Tests LINK_LIBRARIES)
+get_target_property(TESTS_INCLUDE_DIRS Tests INCLUDE_DIRECTORIES)
 get_target_property(GTEST_INCLUDE_DIRS gtest INCLUDE_DIRECTORIES)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
@@ -25,7 +25,7 @@ try_compile(
   HAS_CPP_20
   ${CMAKE_CURRENT_BINARY_DIR}/try_compile
   SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/StringBlockTests.cpp ${CMAKE_CURRENT_SOURCE_DIR}/StringPoolTests.cpp
-  CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${STRINGBLOCKTESTS_INCLUDE_DIRS};${GTEST_INCLUDE_DIRS}"
+  CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${TESTS_INCLUDE_DIRS};${GTEST_INCLUDE_DIRS}"
   LINK_LIBRARIES ${LIBRARIES_LIST}
   CXX_STANDARD 20
   CXX_STANDARD_REQUIRED OFF
@@ -33,9 +33,9 @@ try_compile(
 
 if (HAS_CPP_20)
   message("char8_t can be tested with this compiler!")
-  target_compile_features(StringBlockTests PRIVATE cxx_std_20)
+  target_compile_features(Tests PRIVATE cxx_std_20)
   target_compile_features(gtest PRIVATE cxx_std_20)
 endif()
 
 include(GoogleTest)
-gtest_discover_tests(StringBlockTests)
+gtest_discover_tests(Tests)
