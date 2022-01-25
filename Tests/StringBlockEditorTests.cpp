@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <deque>
 #include <list>
-#include <string_view>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -36,8 +35,8 @@ TYPED_TEST(StringBlockEditorTest, BlocksAreSortedAfterEditorDestruction) {
     TypeParam blocks{ 1, 2, 3, 4, 5, 0 };
 
     {
-        StringBlockEditor<typename TypeParam::iterator, std::string_view> editor{ blocks.begin(), std::prev(blocks.end()) };
+        StringBlockEditor editor{ blocks.begin(), std::prev(blocks.end()) };
     }
 
-    ASSERT_TRUE(std::is_sorted(blocks.cbegin(), blocks.cend(), [](const auto& a, const auto& b){ return a.getFreeSpace() < b.getFreeSpace(); }));
+    ASSERT_TRUE(std::is_sorted(blocks.cbegin(), blocks.cend(), [](const auto& a, const auto& b) { return a.getFreeSpace() < b.getFreeSpace(); }));
 }

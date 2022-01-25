@@ -40,7 +40,7 @@ SOFTWARE.
 template <typename T, bool NullTerminateStrings = true>
 class StringBlock;
 
-template <typename BlockIterator, typename StringType>
+template <typename BlockIterator>
 class StringBlockEditor;
 
 template <typename T, bool NullTerminateStrings = true>
@@ -88,7 +88,7 @@ public:
 private:
     using BlockIterator = typename Blocks::iterator;
 
-    [[nodiscard]] StringBlockEditor<BlockIterator, StringType> getBlockCapableOfStoringStringOfLength(std::size_t length)
+    [[nodiscard]] StringBlockEditor<BlockIterator> getBlockCapableOfStoringStringOfLength(std::size_t length)
     {
         const auto block = findOrCreateBlockCapableOfStoringStringOfLength(length);
         return { blocks.begin(), block };
@@ -199,11 +199,12 @@ private:
     std::size_t freeSpace = 0;
 };
 
-template <typename BlockIterator, typename StringType>
+template <typename BlockIterator>
 class StringBlockEditor {
 public:
     StringBlockEditor(BlockIterator firstBlock, BlockIterator editedBlock) : firstBlock{ firstBlock }, editedBlock{ editedBlock } {}
 
+    template <typename StringType>
     [[nodiscard]] StringType addString(StringType string)
     {
         return editedBlock->addString(string);
