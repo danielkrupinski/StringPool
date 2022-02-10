@@ -23,3 +23,15 @@ jobs:
       run: cmake --build build --config ${{ matrix.configuration }}
     - name: Run unit tests
       run: cd build && ctest --output-on-failure --schedule-random -j $env:NUMBER_OF_PROCESSORS
+  mingw:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: set mingw path
+      run: echo "C:\msys64\mingw32\bin\" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+    - name: configure
+      run: cmake -D CMAKE_BUILD_TYPE=${{ matrix.configuration }} -D BUILD_EXAMPLES=1 -D BUILD_TESTS=1 -G "MinGW Makefiles" -S . -B build
+    - name: build
+      run: cmake --build build
+    - name: run unit tests
+      run: cd build && ctest --output-on-failure --schedule-random -j $env:NUMBER_OF_PROCESSORS
