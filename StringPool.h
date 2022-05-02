@@ -103,7 +103,7 @@ private:
 
     [[nodiscard]] BlockIterator findBlockCapableOfStoringStringOfLength(std::size_t length)
     {
-        return std::lower_bound(getFirstBlockMaybeCapableOfStoringStringOfLength(length), blocks.end(), true, [length](const auto& block, bool) { return !block.canTakeStringOfLength(length); });
+        return std::partition_point(getFirstBlockMaybeCapableOfStoringStringOfLength(length), blocks.end(), [length](const auto& block) { return !block.canTakeStringOfLength(length); });
     }
 
     [[nodiscard]] BlockIterator createBlockCapableOfStoringStringOfLength(std::size_t length)
